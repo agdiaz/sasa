@@ -3,7 +3,15 @@
 const lodash = require('lodash');
 const COOLING_RATE = 0.003;
 
-const simulatedAnnealing = ({ initialTemperature, iterationsLimit, problem, findInitialState, findNextState, energyOf }) => {
+const simulatedAnnealing = ({ 
+  initialTemperature, 
+  iterationsLimit, 
+  problem, 
+  findInitialState, 
+  findNextState, 
+  energyOf,
+  isDebugging 
+}) => {
   let currentState = findInitialState(problem);
   let temperature = initialTemperature;
   let time = 0;
@@ -33,7 +41,8 @@ const simulatedAnnealing = ({ initialTemperature, iterationsLimit, problem, find
     currentState = state;
     temperature *= 1.0 - COOLING_RATE
     time++;
-    console.log({ time, temperature, currentState });
+    
+    if (isDebugging) console.debug({ time, temperature, currentState });
   }
 
   return currentState;
