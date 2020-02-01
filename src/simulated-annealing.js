@@ -1,16 +1,9 @@
 'use strict';
+
 const lodash = require('lodash');
 const COOLING_RATE = 0.003;
 
-const findInitialState = (problem) => {
-  return lodash.sample(problem);
-}
-const findNextState = (problem, state) => {
-  return lodash.sample(problem);
-}
-const energyOf = state => state;
-
-const simulatedAnnealing = ({ problem, initialTemperature, iterationsLimit }) => {
+const simulatedAnnealing = ({ initialTemperature, iterationsLimit, problem, findInitialState, findNextState, energyOf }) => {
   let currentState = findInitialState(problem);
   let temperature = initialTemperature;
   let time = 0;
