@@ -1,13 +1,16 @@
 'use strict';
+console.log("Welcome to SASA!");
 
-const simulatedAnnealing = require('./src/simulated-annealing');
-const randomList = require('./src/utils/random-list');
-const plotProblem = require('./src/utils/plot-problem');
+const program = require('commander');
+const collectFiles = require('./src/utils/command-utils');
 
-console.log('Starting SASA');
+program
+  .version('0.0.1')
+  .option('-d, --debug', 'Output extra debugging')
+  .requiredOption('-i, --input <file>', 'path to input file', collectFiles)
+  .parse(process.argv);
 
-const problem = randomList(250, 10, 25);
-const result = simulatedAnnealing({ problem, initialTemperature: 1000, iterationsLimit: 100 });
-plotProblem(problem, result);
+if (program.debug) console.log(program.opts());
 
-console.log('Ending SASA', result);
+console.log('SASA finished. Good bye!');
+process.exit(0);
