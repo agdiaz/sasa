@@ -2,8 +2,7 @@
 
 const _lodash = require('lodash');
 const { maxLength } = require('./fasta-reader');
-
-const DELETE_SYMBOL = '-';
+const { DELETE_SYMBOL } = require('../constants');
 
 const findElement = (sequences, position) => {
   if (position >= maxLength(sequences)) {
@@ -19,8 +18,10 @@ const findElement = (sequences, position) => {
 
 const addInsert = count => (sequences, state, position) => {
   const newElement = findElement(sequences, position);
-  const inserts = _lodash.repeat(newElement, count).split('');
-  state.splice(position, 0, ...inserts);
+  if (newElement !== DELETE_SYMBOL) {
+    const inserts = _lodash.repeat(newElement, count).split('');
+    state.splice(position, 0, ...inserts);
+  }
 
   return state;
 }
@@ -38,7 +39,9 @@ const keepElement = (_sequences, state, _position) => {
 
 const changeElement = (sequences, state, position) => {
   let newElement = findElement(sequences, position);
-  state[position] = newElement;
+  if (newElement !== DELETE_SYMBOL) {
+    state[position] = newElement;
+  }
 
   return state;
 }
@@ -50,24 +53,23 @@ const removeElement = count => (_sequences, state, position) => {
 }
 
 const randomIndel = () => {
-  const dice = Math.ceil(Math.random() * 10);
+  const dice = Math.ceil(Math.random() * 12);
   const count = Math.ceil(Math.random() * 2);
 
   switch (dice) {
     case 1:
     case 2:
+      return removeElement(count);
     case 3:
     case 4:
     case 5:
       return changeElement;
     case 6:
-      return addInsert(count);
     case 7:
+        return addInsert(count);
     case 8:
-      return removeElement(count);
-    case 9:
-      return addDelete(1);
-    case 10:
+          return addDelete(1);
+    default:
       return keepElement;
   }
 };

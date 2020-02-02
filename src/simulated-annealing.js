@@ -1,6 +1,7 @@
 'use strict';
 
 const { COOLING_RATE } = require('./constants');
+const COOLING_CONSTANT = 1 - COOLING_RATE;
 
 const simulatedAnnealing = ({
   initialTemperature,
@@ -18,32 +19,30 @@ const simulatedAnnealing = ({
   for(
     currentTemperature = initialTemperature, currentTime = 0;
     currentTemperature > 1 && currentTime < iterationsLimit;
-    currentTemperature *= 1.0 - COOLING_RATE, currentTime++
+    currentTemperature *= COOLING_CONSTANT, currentTime++
   ) {
-    let currentEnergy = energyOf(problem, currentState);
-
-    // let state;
-    // for(let iteration = 0; iteration < iterationsLimit; iteration++) {
+    const currentEnergy = energyOf(problem, currentState);
     const nextState = findNextState(problem, currentState);
     const nextStateEnergy = energyOf(problem, nextState);
+
     const deltaEnergy = nextStateEnergy - currentEnergy;
 
-    if (deltaEnergy <= 0) {
-      // state = nextState;
+    if (deltaEnergy < 0) {
       currentState = nextState;
     } else {
-      const qExp = -(deltaEnergy / currentTemperature);
-      const q = Math.min(1, Math.pow(Math.E, qExp));
+      const qExp = -(deltaEnergy * 1.0 / currentTemperature * 1.0);
+      const q = Math.min(1.0, Math.pow(Math.E, qExp));
 
-      if (Math.random() < q) {
-        // state = nextState;
-        currentState = nextState;
-      }
+      // if (q < Math.random()) currentState = nextState;
+      if (Math.random() < q) currentState = nextState;
     }
-    // }
 
-    // currentState = state;
-    if (isDebugging) console.debug({ currentTime, currentTemperature, currentState, currentEnergy });
+    if (isDebugging) console.debug({
+      currentTime,
+      currentTemperature,
+      currentEnergy,
+      currentAlignmentLength: currentState.length
+    });
   }
 
   return currentState;

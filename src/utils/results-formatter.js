@@ -6,8 +6,11 @@ module.exports = ({ sequences, executionResult: alignedSequence }) => {
   const positions = _lodash.range(maxLength).map(n => n+1);
 
   console.log('POS', positions.join(''));
-  console.log('ALG', alignedSequence.join(''));
+  console.log('\x1b[31mALG', alignedSequence.join(''));
+  console.log('\x1b[0m');
   sequences.forEach((seq, index) => {
     console.log((1 + index).toString().padStart(3, 'SEQ'), seq.set[0].seq.toString());
   });
+
+  console.log();
 };
