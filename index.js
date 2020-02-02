@@ -4,6 +4,7 @@ console.log("Welcome to SASA!");
 const program = require('commander');
 const collectFiles = require('./src/utils/command-utils');
 const run = require('./src/main');
+const resultsFormatter = require('./src/utils/results-formatter');
 const timestamp = new Date().toISOString();
 
 program
@@ -23,5 +24,7 @@ const results = run({
   isDebugging: program.debug
 });
 
-console.log('SASA finished', { ...results, timestamp });
+resultsFormatter(results);
+
+console.log('SASA finished');
 process.exit(0);

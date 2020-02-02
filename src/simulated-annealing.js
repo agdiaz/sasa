@@ -18,11 +18,12 @@ const simulatedAnnealing = ({
 
   while(temperature > 1) {
     let state = currentState;
+    let currentEnergy = energyOf(state);
     let iteration = 0;
     
     while(iteration < iterationsLimit) {
       const nextState = findNextState(problem, state);
-      const deltaEnergy = energyOf(nextState) - energyOf(state);
+      const deltaEnergy = energyOf(nextState) - currentEnergy;
       
       if (deltaEnergy < 0) {
         state = nextState;
@@ -42,7 +43,8 @@ const simulatedAnnealing = ({
     temperature *= 1.0 - COOLING_RATE
     time++;
     
-    if (isDebugging) console.debug({ time, temperature, currentState });
+    if (isDebugging) console.debug({ time, temperature, currentState, currentEnergy });
+    // if (isDebugging) console.debug(currentState.toString());
   }
 
   return currentState;
