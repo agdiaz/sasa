@@ -3,9 +3,10 @@
 const fs = require('fs');
 const { FastaUtils } = require('bioseq-ts');
 const simulatedAnnealing = require('./simulated-annealing');
+const { findInitialState, findNextState, energyOf } = require('./sequence-alignment');
 
 const mapPathsToSequences = (files, isDebugging = false) => {
-  files.map(filePath => {
+  return files.map(filePath => {
     const sequenceData = fs.readFileSync(filePath).toString();
     const bioSeqSet = new FastaUtils().parse(sequenceData);
     
@@ -15,22 +16,14 @@ const mapPathsToSequences = (files, isDebugging = false) => {
   })
 }
 
-const findInitialState = (problem) => {
-  // todo
-}
-const findNextState = (problem, state) => {
-  // todo
-}
-const energyOf = state => {
-  // todo
-};
-
 const run = ({ initialTemperature, iterationsLimit, files, isDebugging = false }) => {
+  let executionResult;
+
   try {
     if (isDebugging) console.debug('Mapping paths to sequences');
     const sequences = mapPathsToSequences(files, isDebugging);
     
-    const executionResult = simulatedAnnealing({ 
+    executionResult = simulatedAnnealing({ 
       initialTemperature, 
       iterationsLimit,
       problem: sequences,
