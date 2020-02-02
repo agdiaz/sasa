@@ -50,20 +50,24 @@ const removeElement = count => (_sequences, state, position) => {
 }
 
 const randomIndel = () => {
-  const dice = Math.ceil(Math.random() * 5);
+  const dice = Math.ceil(Math.random() * 10);
   const count = Math.ceil(Math.random() * 2);
 
   switch (dice) {
     case 1:
-      return addInsert(count);
     case 2:
-      return addDelete(count);
     case 3:
-      return removeElement(count);
     case 4:
-      return changeElement;
     case 5:
-    default:
+      return changeElement;
+    case 6:
+      return addInsert(count);
+    case 7:
+    case 8:
+      return removeElement(count);
+    case 9:
+      return addDelete(1);
+    case 10:
       return keepElement;
   }
 };

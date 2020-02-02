@@ -1,6 +1,5 @@
 'use strict';
-const DEFAULT_TEMP = 5000;
-const DEFAULT_ITERATIONS = 10;
+const { DEFAULT_TEMP, DEFAULT_ITERATIONS } = require('./src/constants');
 
 console.log("Welcome to SASA!");
 
@@ -20,7 +19,7 @@ program
 
 if (program.debug) console.log(program.opts());
 
-const results = run({ 
+const results = run({
   files: program.input,
   initialTemperature: program.temperature,
   iterationsLimit: program.limit,

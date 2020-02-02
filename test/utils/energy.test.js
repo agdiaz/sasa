@@ -7,11 +7,11 @@ test('the energy of alignment is 0 when is full equals', () => {
   expect(energyOf(alignment, sequences)).toBe(0);
 });
 
-test('the energy of alignment is MAX when is empty', () => {
+test('the energy of alignment is not 0 when is empty', () => {
   const alignment = [];
   const sequences = [['A', 'B', 'C', 'D'], ['A', 'B'], ['A', 'B', 'C']];
 
-  expect(energyOf(alignment, sequences)).toBe(4 + 2 + 3);
+  expect(energyOf(alignment, sequences)).toBe(4);
 });
 
 test('the energy of alignment is higher when is longer than max seq', () => {
@@ -21,11 +21,18 @@ test('the energy of alignment is higher when is longer than max seq', () => {
   expect(energyOf(alignment, sequences)).toBe(0 + 0 + 1/3 + 2 / 3 + 1 + 1);
 });
 
-test('the energy of alignment is higher when is longer than max seq', () => {
+test('the energy of alignment is higher when is longer with deletes than max seq', () => {
   const alignment = ['A', '-', '-', '-', '-', '-'];
   const sequences = [['A', 'B'], ['A', 'B']];
 
   expect(energyOf(alignment, sequences)).toBe(0 + 1 + 1 + 1 + 1 + 1);
+});
+
+test('the energy of alignment is higher when is shorter than max seq', () => {
+  const alignment = ['A', 'B'];
+  const sequences = [['A', 'C'], ['A', 'B', 'C', 'D', 'E', 'F']];
+
+  expect(energyOf(alignment, sequences)).toBe(0 + 0.5 + 1 + 1 + 1 + 1);
 });
 
 test('energy of alignment of 1 element', () => {

@@ -1,0 +1,5 @@
+module.exports = {
+  DEFAULT_TEMP: 10000,
+  DEFAULT_ITERATIONS: 50000,
+  COOLING_RATE: 0.002
+};
