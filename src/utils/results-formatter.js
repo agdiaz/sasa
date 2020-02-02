@@ -8,6 +8,6 @@ module.exports = ({ sequences, executionResult: alignedSequence }) => {
   console.log('POS', positions.join(''));
   console.log('ALG', alignedSequence.join(''));
   sequences.forEach((seq, index) => {
-    console.log(index.toString().padStart(3), seq.set[0].seq.toString());
+    console.log((1 + index).toString().padStart(3, 'SEQ'), seq.set[0].seq.toString());
   });
 };
