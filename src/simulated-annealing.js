@@ -1,4 +1,6 @@
 'use strict';
+// const events = require('events');
+// const eventEmitter = new events.EventEmitter();
 
 const { COOLING_RATE } = require('./constants');
 const COOLING_CONSTANT = 1 - COOLING_RATE;
@@ -10,10 +12,9 @@ const simulatedAnnealing = ({
   findInitialState,
   findNextState,
   energyOf,
-  isDebugging
+  eventEmitter
 }) => {
   let currentState = findInitialState(problem);
-  if (isDebugging) console.debug('initialState', { currentState });
   let currentTemperature, currentTime;
 
   for(
@@ -37,11 +38,8 @@ const simulatedAnnealing = ({
       if (Math.random() < q) currentState = nextState;
     }
 
-    if (isDebugging) console.debug({
-      currentTime,
-      currentTemperature,
-      currentEnergy,
-      currentAlignmentLength: currentState.length
+    eventEmitter.emit('iterationCompleted', {
+      currentTime, currentTemperature, currentEnergy, currentAlignmentLength: currentState.length
     });
   }
 
