@@ -13,38 +13,35 @@ const simulatedAnnealing = ({
   isDebugging 
 }) => {
   let currentState = findInitialState(problem);
-  let temperature = initialTemperature;
+  let currentTemperature = initialTemperature;
   let time = 0;
 
-  while(temperature > 1) {
+  while(currentTemperature > 1) {
     let state = currentState;
-    let currentEnergy = energyOf(state);
-    let iteration = 0;
+    let currentEnergy = energyOf(problem, state);
     
-    while(iteration < iterationsLimit) {
+    for(let iteration = 0; iteration < iterationsLimit; iteration++) {
       const nextState = findNextState(problem, state);
-      const deltaEnergy = energyOf(nextState) - currentEnergy;
+      const nextStateEnergy = energyOf(problem, nextState);
+      const deltaEnergy = nextStateEnergy - currentEnergy;
       
       if (deltaEnergy < 0) {
         state = nextState;
       } else {
-        const qExp = ((-1) * deltaEnergy) / temperature;
-        const q = lodash.min([1, Math.pow(Math.E, qExp)]);
+        const qExp = -(deltaEnergy / currentTemperature);
+        const q = Math.min(1, Math.pow(Math.E, qExp));
 
         if (Math.random() < q) {
           state = nextState;
         }
       }
-
-      iteration++;
     }
 
     currentState = state;
-    temperature *= 1.0 - COOLING_RATE
+    currentTemperature *= 1.0 - COOLING_RATE
     time++;
     
-    if (isDebugging) console.debug({ time, temperature, currentState, currentEnergy });
-    // if (isDebugging) console.debug(currentState.toString());
+    if (isDebugging) console.debug({ time, currentTemperature, currentState, currentEnergy });
   }
 
   return currentState;

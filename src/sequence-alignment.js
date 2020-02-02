@@ -1,6 +1,7 @@
 'use strict';
 const _lodash = require('lodash');
 const randomIndel = require('./utils/indel');
+const energyOfMatches = require('./utils/energy');
 
 const findInitialState = (sequences) => {
   const maxLength = Math.max(...sequences.map(sequence => sequence.set[0].seq.length));
@@ -23,8 +24,10 @@ const findNextState = (sequences, state) => {
   return indelFunction(sequences, nextState, randomIndex);
 };
 
-const energyOf = state => {
-  return (1 + state.filter(p => p === '-').length) / state.length;
+const energyOf = (sequences, state) => {
+  const arrayedSequences = sequences.map(seq => seq.set[0].seq.split(''));
+  
+  return energyOfMatches(state, arrayedSequences);
 };
 
 module.exports = {

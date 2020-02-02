@@ -1,4 +1,7 @@
 'use strict';
+const DEFAULT_TEMP = 5000;
+const DEFAULT_ITERATIONS = 10000;
+
 console.log("Welcome to SASA!");
 
 const program = require('commander');
@@ -11,8 +14,8 @@ program
   .version('0.0.1')
   .requiredOption('-i, --input <file>', 'path to input file', collectFiles, [])
   .option('-d, --debug [flag]', 'Output extra debugging', false)
-  .option('-t, --temperature [temp]', 'Initial temperature of the model', 1000)
-  .option('-l, --limit [number]', 'Max number of iterations', 100)
+  .option('-t, --temperature [temp]', 'Initial temperature of the model', DEFAULT_TEMP)
+  .option('-l, --limit [number]', 'Max number of iterations', DEFAULT_ITERATIONS)
   .parse(process.argv);
 
 if (program.debug) console.log(program.opts());
