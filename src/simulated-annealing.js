@@ -1,30 +1,30 @@
 'use strict';
 
-const lodash = require('lodash');
 const COOLING_RATE = 0.003;
 
-const simulatedAnnealing = ({ 
-  initialTemperature, 
-  iterationsLimit, 
-  problem, 
-  findInitialState, 
-  findNextState, 
+const simulatedAnnealing = ({
+  initialTemperature,
+  iterationsLimit,
+  problem,
+  findInitialState,
+  findNextState,
   energyOf,
-  isDebugging 
+  isDebugging
 }) => {
   let currentState = findInitialState(problem);
-  let currentTemperature = initialTemperature;
-  let time = 0;
+  if (isDebugging) console.debug('initialState', { currentState });
 
-  while(currentTemperature > 1) {
-    let state = currentState;
-    let currentEnergy = energyOf(problem, state);
-    
+  for(let currentTemperature = initialTemperature; currentTemperature > 1; currentTemperature *= 1.0 - COOLING_RATE) {
+    let currentTime = 0
+    let currentEnergy = energyOf(problem, currentState);
+
+    let state;
+
     for(let iteration = 0; iteration < iterationsLimit; iteration++) {
-      const nextState = findNextState(problem, state);
+      const nextState = findNextState(problem, currentState);
       const nextStateEnergy = energyOf(problem, nextState);
       const deltaEnergy = nextStateEnergy - currentEnergy;
-      
+
       if (deltaEnergy < 0) {
         state = nextState;
       } else {
@@ -38,10 +38,8 @@ const simulatedAnnealing = ({
     }
 
     currentState = state;
-    currentTemperature *= 1.0 - COOLING_RATE
-    time++;
-    
-    if (isDebugging) console.debug({ time, currentTemperature, currentState, currentEnergy });
+    if (isDebugging) console.debug({ currentTime, currentTemperature, currentState, currentEnergy });
+    currentTime++;
   }
 
   return currentState;

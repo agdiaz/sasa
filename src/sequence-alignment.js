@@ -2,18 +2,22 @@
 const _lodash = require('lodash');
 const randomIndel = require('./utils/indel');
 const energyOfMatches = require('./utils/energy');
+const { maxLength } = require('./utils/fasta-reader');
 
 const findInitialState = (sequences) => {
-  const maxLength = Math.max(...sequences.map(sequence => sequence.set[0].seq.length));
-  const initialState = Array(maxLength);
+  const maxPosition = maxLength(sequences);
+  const initialState = Array(maxPosition);
   
-  for(let index = 0; index < maxLength; index++) {
+  for(let index = 0; index < maxPosition; index++) {
     const randomSequence = _lodash.sample(sequences);
-    
-    initialState[index] = randomSequence.set[0].seq[index] || '-';
+    const possibleValues = (index < randomSequence.set[0].seq.length) 
+      ? [randomSequence.set[0].seq[index], '-']
+      : ['-'];
+ 
+    initialState[index] = _lodash.sample(possibleValues);
   }
 
-  return initialState;
+  return initialState;randomSequence.set[0].seq.length
 };
 
 const findNextState = (sequences, state) => {

@@ -6,6 +6,7 @@
   "scripts": {
     "lint": "eslint --ignore-path .gitignore .",
     "test": "jest",
+    "test:debug": "node --inspect node_modules/.bin/jest --runInBand",
     "start": "node index.js $*"
   },
   "author": "Adrián Díaz & Roxana Cerretini",

@@ -10,7 +10,9 @@ const energyOf = (alignment, sequences) => {
 
     return valuesAtSamePosition.filter(v => v !== value).length / sequences.length;
   });
-  return Math.round(positionEnergies.reduce((a, b) => a + b));
+  const sumatoryOfEnergies = positionEnergies.reduce((a, b) => a + b);
+
+  return sumatoryOfEnergies;
 };
 
 module.exports = energyOf;

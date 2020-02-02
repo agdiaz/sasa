@@ -1,6 +1,6 @@
 'use strict';
 const DEFAULT_TEMP = 5000;
-const DEFAULT_ITERATIONS = 10000;
+const DEFAULT_ITERATIONS = 10;
 
 console.log("Welcome to SASA!");
 
