@@ -36,7 +36,7 @@ const run = ({ initialTemperature, iterationsLimit, files, isDebugging = false }
     throw new Error('An uncatched error appeared. The program will be closed with an error code');
   }
 
-  return { files, initialTemperature, iterationsLimit };
+  return { files, initialTemperature, iterationsLimit, executionResult };
 };
 
 module.exports = run;

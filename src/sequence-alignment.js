@@ -15,11 +15,11 @@ const findInitialState = (sequences) => {
 };
 
 const findNextState = (sequences, state) => {
-  // todo
+  return state;
 };
 
 const energyOf = state => {
-  // todo
+  return state.length;
 };
 
 module.exports = {
