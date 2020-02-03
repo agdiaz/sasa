@@ -13,6 +13,25 @@ This program implements a Simulated Annealing algorithm to find the consensus al
 ### Initial state
 It's a sequence created position by position with the length of the longest input sequence.
 
+For example, given the next sequences:
+
+```
+POS 012345
+SE1 ABCDEF
+SE2 CDE
+```
+
+Positions were randomly generated like:
+
+- POS 0: 'A' or 'C'
+- POS 1: 'B' or 'D'
+- POS 2: 'C' or 'E'
+- POS 3: 'D' or '-'
+- POS 4: 'E' or '-'
+- POS 5: 'F' or '-'
+
+Thus, the sequence "ABE-E-" could be a possible first sequence.
+
 ### Energy
 There is a relation between the quality of the alignment and the energy of the system. Better aligments have low energy. This program determines energy of a state looking for mismatches between the current consensus sequence and the input ones. 
 Position by position, the energy function count the proportion of mismatches following the formula:
@@ -30,7 +49,7 @@ SE2: ABDXZF
 ```
 
 ```
-Energy(0): 0
+Energy(0): 0         = 0
 Energy(1): 0.5 + 0.5 = 1
 Energy(2): 0.5       = 0.5
 Energy(3): 0.5       = 0.5
@@ -41,7 +60,8 @@ Energy(7): 0.5 + 0.5 = 1
 Energy(8): 0.5 + 0.5 = 1
 ```
 
-Summatory of energy of all positions gives the energy of the current state (for the above's example is 6)
+Summatory of energy of all positions gives the energy of the current state (for the above's example is 6).
+Thus, if the consensus sequence full match with all the input sequeces, the energy will be zero (the desired one).
 
 ### Next state
 For every iteration, a dice of 12 sides is randomly thrown and depending the results, an operation which alters the state is executed. The proportion is the next distribution:
