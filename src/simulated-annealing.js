@@ -17,6 +17,11 @@ const simulatedAnnealing = ({
   let currentState = findInitialState(problem);
   let currentTemperature, currentTime;
 
+  eventEmitter.emit('readyToStart', {
+    initialAlignmentLength: currentState.length,
+    initialEnergy: energyOf(problem, currentState)
+  });
+
   for(
     currentTemperature = initialTemperature, currentTime = 0;
     currentTemperature > 1 && currentTime < iterationsLimit;

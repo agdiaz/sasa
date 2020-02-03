@@ -26,10 +26,15 @@ program
 if (program.debug) console.log(program.opts());
 
 const eventsLog = [];
+let initialConditions;
 eventEmitter.addListener('iterationCompleted', (event) => {
   eventsLog.push(event);
   if (program.debug) console.debug('iterationCompleted', event);
 });
+eventEmitter.addListener('readyToStart', (event) => {
+  initialConditions = event;
+});
+
 
 performance.mark('Starting the execution');
 const results = run({
@@ -50,7 +55,7 @@ measurements.forEach(measurement => {
 resultsFormatter(results);
 
 console.log('SASA finished. Opening results...');
-plotLogs(eventsLog);
+plotLogs(initialConditions, eventsLog);
 
 console.log('Press any key to continue.');
 process.stdin.once('data', function () {
