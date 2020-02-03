@@ -1,6 +1,6 @@
 'use strict';
 const events = require('events');
-const performance = require('perf_hooks').performance;
+// const performance = require('perf_hooks').performance;
 const util = require('util');
 const debug = util.debuglog('performance');
 
@@ -36,7 +36,7 @@ eventEmitter.addListener('readyToStart', (event) => {
 });
 
 
-performance.mark('Starting the execution');
+// performance.mark('Starting the execution');
 const results = run({
   files: program.input,
   initialTemperature: program.temperature,
@@ -44,13 +44,13 @@ const results = run({
   isDebugging: program.debug,
   eventEmitter
 });
-performance.mark('End the execution');
-performance.measure('Total time', 'Starting the execution', 'End the execution');
+// performance.mark('End the execution');
+// performance.measure('Total time', 'Starting the execution', 'End the execution');
 
-const measurements = performance.getEntriesByType('measure');
-measurements.forEach(measurement => {
-  debug('\x1b[32m%s\x1b[0m', measurement.name + ' ' + measurement.duration);
-})
+// const measurements = performance.getEntriesByType('measure');
+// measurements.forEach(measurement => {
+//   debug('\x1b[32m%s\x1b[0m', measurement.name + ' ' + measurement.duration);
+// })
 
 resultsFormatter(results);
 
