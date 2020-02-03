@@ -1,7 +1,8 @@
 'use strict';
 const _lodash = require('lodash');
 
-module.exports = ({ sequences, executionResult: alignedSequence }) => {
+module.exports = ({ sequences, executionResult }) => {
+  const alignedSequence = executionResult.currentState;
   const maxLength = Math.max(...sequences.map(sequence =>
     sequence.set[0].seq.length));
   const chunkedSequences = sequences.map(sequence =>

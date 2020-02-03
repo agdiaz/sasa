@@ -45,7 +45,9 @@ const results = run({
 
 resultsFormatter(results);
 
-console.log('SASA finished. Opening results...');
+console.log('SASA finished', { energy: results.executionResult.currentEnergy });
+console.log(results.executionResult.currentState.join('').toString());
+
 plotLogs(initialConditions, eventsLog);
 
 console.log('Press any key to continue.');
