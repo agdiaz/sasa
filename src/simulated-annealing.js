@@ -12,17 +12,17 @@ const simulatedAnnealing = ({
   findInitialState,
   findNextState,
   energyOf,
-  eventEmitter
+  eventEmitter,
 }) => {
   let currentState = findInitialState(problem);
   let currentTemperature, currentTime;
 
   eventEmitter.emit('readyToStart', {
     initialAlignmentLength: currentState.length,
-    initialEnergy: energyOf(problem, currentState)
+    initialEnergy: energyOf(problem, currentState),
   });
 
-  for(
+  for (
     currentTemperature = initialTemperature, currentTime = 0;
     currentTemperature > 1 && currentTime < iterationsLimit;
     currentTemperature *= COOLING_CONSTANT, currentTime++
@@ -44,7 +44,10 @@ const simulatedAnnealing = ({
     }
 
     eventEmitter.emit('iterationCompleted', {
-      currentTime, currentTemperature, currentEnergy, currentAlignmentLength: currentState.length
+      currentTime,
+      currentTemperature,
+      currentEnergy,
+      currentAlignmentLength: currentState.length,
     });
   }
 

@@ -1,10 +1,21 @@
 'use strict';
 
 const simulatedAnnealing = require('./simulated-annealing');
-const { findInitialState, findNextState, energyOf } = require('./sequence-alignment');
+const {
+  findInitialState,
+  findNextState,
+  energyOf,
+} = require('./sequence-alignment');
 const { mapPathsToSequences } = require('./utils/fasta-reader');
 
-const run = ({ initialTemperature, iterationsLimit, files, isDebugging = false, eventEmitter }) => {
+const run = (args) => {
+  const {
+    initialTemperature,
+    iterationsLimit,
+    files,
+    isDebugging = false,
+    eventEmitter,
+  } = args;
   let executionResult;
   let sequences;
 
@@ -18,11 +29,13 @@ const run = ({ initialTemperature, iterationsLimit, files, isDebugging = false, 
       findInitialState,
       findNextState,
       energyOf,
-      eventEmitter
+      eventEmitter,
     });
-  } catch(error) {
+  } catch (error) {
     console.error(error);
-    throw new Error('An uncatched error appeared. The program will be closed with an error code');
+    throw new Error(
+      'An uncatched error. The program will be closed with an error code',
+    );
   }
 
   return { files, sequences, executionResult };

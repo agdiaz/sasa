@@ -11,16 +11,16 @@ const mapPathsToSequences = (files, isDebugging = false) => {
     if (isDebugging) console.debug(bioSeqSet);
 
     return bioSeqSet;
-  })
+  });
 };
 
 const maxLength = sequences => {
   const lengths = sequences.map(sequence => sequence.set[0].seq.length)
 
   return Math.max(...lengths);
-}
+};
 
 module.exports = {
   mapPathsToSequences,
-  maxLength
+  maxLength,
 };

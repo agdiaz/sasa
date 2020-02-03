@@ -2,14 +2,16 @@
 const _lodash = require('lodash');
 
 module.exports = ({ sequences, executionResult: alignedSequence }) => {
-  const maxLength = Math.max(...sequences.map(sequence => sequence.set[0].seq.length));
-  const chunkedSequences = sequences.map(sequence => _lodash.chunk(sequence.set[0].seq.toString(), 50));
+  const maxLength = Math.max(...sequences.map(sequence =>
+    sequence.set[0].seq.length));
+  const chunkedSequences = sequences.map(sequence =>
+    _lodash.chunk(sequence.set[0].seq.toString(), 50));
   const chunkedResult = _lodash.chunk(alignedSequence.join(''), 50);
   const iterations = _lodash.range(0, Math.ceil(maxLength / 50));
 
   iterations.forEach(it => {
     console.log('FROM-TO:', it * 50, ((it + 1) * 50) - 1);
-    if (it % 2 == 0) {
+    if (it % 2 === 0) {
       console.log('    0         1         2         3         4');
     } else {
       console.log('    5         6         7         8         9');
@@ -27,7 +29,9 @@ module.exports = ({ sequences, executionResult: alignedSequence }) => {
       if (it < seq.length) {
         logSeq = seq[it].join('').toString();
       }
-      console.log('\x1b[33m' + (1 + index).toString().padStart(3, 'SEQ'), logSeq);
+      console.log(
+        '\x1b[33m' + (1 + index).toString().padStart(3, 'SEQ'), logSeq
+      );
     });
 
     console.log('\x1b[0m');

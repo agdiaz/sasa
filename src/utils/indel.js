@@ -9,12 +9,14 @@ const findElement = (sequences, position) => {
     return DELETE_SYMBOL;
   }
 
-  const originalElements = sequences.map(sequence => sequence.set[0].seq[position]);
-  const validOriginalElements = _lodash.remove(originalElements, elem => !!elem);
+  const originalElements = sequences.map(sequence =>
+    sequence.set[0].seq[position]);
+  const validOriginalElements = _lodash.remove(originalElements,
+    elem => !!elem);
   const newElement = _lodash.sample(validOriginalElements);
 
   return newElement;
-}
+};
 
 const addInsert = count => (sequences, state, position) => {
   const newElement = findElement(sequences, position);
@@ -24,18 +26,18 @@ const addInsert = count => (sequences, state, position) => {
   }
 
   return state;
-}
+};
 
 const addDelete = count => (_sequences, state, position) => {
   const deletes = _lodash.repeat(DELETE_SYMBOL, count).split('');
   state.splice(position, 0, ...deletes);
 
   return state;
-}
+};
 
 const keepElement = (_sequences, state, _position) => {
   return state;
-}
+};
 
 const changeElement = (sequences, state, position) => {
   let newElement = findElement(sequences, position);
@@ -44,13 +46,13 @@ const changeElement = (sequences, state, position) => {
   }
 
   return state;
-}
+};
 
 const removeElement = count => (_sequences, state, position) => {
   state.splice(position, count);
 
   return state;
-}
+};
 
 const randomIndel = () => {
   const dice = Math.ceil(Math.random() * 12);
@@ -66,9 +68,9 @@ const randomIndel = () => {
       return changeElement;
     case 6:
     case 7:
-        return addInsert(count);
+      return addInsert(count);
     case 8:
-          return addDelete(1);
+      return addDelete(1);
     default:
       return keepElement;
   }

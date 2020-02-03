@@ -7,10 +7,19 @@ const plotLogs = (initialConditions, logs) => {
   const temperatureData = {x: [], y: [], type: 'line', name: 'temperature' };
   const energyData = {x: [], y: [], type: 'line', name: 'energy' };
   const alignData = {x: [], y: [], type: 'line', name: 'align' };
-  const initialEnergyDate = {x: [], y: [], type: 'line', name: 'INITIAL ENERGY' };
+  const initialEnergyDate = {
+    x: [], y: [], type: 'line', name: 'INITIAL ENERGY'
+  };
   const initialLenght = {x: [], y: [], type: 'line', name: 'INITIAL LENGTH' };
 
-  logs.forEach(({ currentTime, currentTemperature, currentAlignmentLength, currentEnergy }) => {
+  logs.forEach(log => {
+    const {
+      currentTime,
+      currentTemperature,
+      currentAlignmentLength,
+      currentEnergy,
+    } = log;
+
     temperatureData.x.push(currentTime);
     energyData.x.push(currentTime);
     alignData.x.push(currentTime);
@@ -24,7 +33,9 @@ const plotLogs = (initialConditions, logs) => {
     initialLenght.y.push(initialAlignmentLength);
   });
 
-  plot([temperatureData, energyData, alignData, initialEnergyDate, initialLenght]);
+  plot([
+    temperatureData, energyData, alignData, initialEnergyDate, initialLenght
+  ]);
 };
 
 module.exports = plotLogs;

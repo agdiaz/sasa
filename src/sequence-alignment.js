@@ -3,21 +3,22 @@ const _lodash = require('lodash');
 const randomIndel = require('./utils/indel');
 const energyOfMatches = require('./utils/energy');
 const { maxLength } = require('./utils/fasta-reader');
+const { DELETE_SYMBOL } = './constants';
 
 const findInitialState = (sequences) => {
   const maxPosition = maxLength(sequences);
   const initialState = Array(maxPosition);
 
-  for(let index = 0; index < maxPosition; index++) {
+  for (let index = 0; index < maxPosition; index++) {
     const randomSequence = _lodash.sample(sequences);
     const possibleValues = (index < randomSequence.set[0].seq.length)
-      ? [randomSequence.set[0].seq[index], '-']
-      : ['-'];
+      ? [randomSequence.set[0].seq[index], DELETE_SYMBOL]
+      : [DELETE_SYMBOL];
 
     initialState[index] = _lodash.sample(possibleValues);
   }
 
-  return initialState;randomSequence.set[0].seq.length
+  return initialState;
 };
 
 const findNextState = (sequences, state) => {
@@ -37,5 +38,5 @@ const energyOf = (sequences, state) => {
 module.exports = {
   findInitialState,
   findNextState,
-  energyOf
+  energyOf,
 };

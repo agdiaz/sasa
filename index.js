@@ -1,12 +1,12 @@
 'use strict';
 const events = require('events');
 // const performance = require('perf_hooks').performance;
-const util = require('util');
-const debug = util.debuglog('performance');
+// const util = require('util');
+// const debug = util.debuglog('performance');
 
 const { DEFAULT_TEMP, DEFAULT_ITERATIONS } = require('./src/constants');
 
-console.log("Welcome to SASA!");
+console.log('Welcome to SASA!');
 
 const program = require('commander');
 const collectFiles = require('./src/utils/command-utils');
@@ -19,8 +19,10 @@ program
   .version('0.0.1')
   .requiredOption('-i, --input <file>', 'path to input file', collectFiles, [])
   .option('-d, --debug [flag]', 'Output extra debugging', false)
-  .option('-t, --temperature [temp]', 'Initial temperature of the model', DEFAULT_TEMP)
-  .option('-l, --limit [number]', 'Max number of iterations', DEFAULT_ITERATIONS)
+  .option('-t, --temperature [temp]', 'Initial temperature of the model',
+    DEFAULT_TEMP)
+  .option('-l, --limit [number]', 'Max number of iterations',
+    DEFAULT_ITERATIONS)
   .parse(process.argv);
 
 if (program.debug) console.log(program.opts());
@@ -42,7 +44,7 @@ const results = run({
   initialTemperature: program.temperature,
   iterationsLimit: program.limit,
   isDebugging: program.debug,
-  eventEmitter
+  eventEmitter,
 });
 // performance.mark('End the execution');
 // performance.measure('Total time', 'Starting the execution', 'End the execution');
@@ -58,7 +60,7 @@ console.log('SASA finished. Opening results...');
 plotLogs(initialConditions, eventsLog);
 
 console.log('Press any key to continue.');
-process.stdin.once('data', function () {
+process.stdin.once('data', () => {
   eventEmitter.removeAllListeners();
   process.exit(0);
 });
