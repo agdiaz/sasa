@@ -3,7 +3,7 @@ const _lodash = require('lodash');
 
 const energyOf = (alignment, sequences) => {
   const maxSequenceLength = Math.max(
-    alignment.length, ...sequences.map(s => s.length)
+    alignment.length, ...sequences.map(s => s.length),
   );
   const positionEnergies = _lodash.range(0, maxSequenceLength).map(position => {
     if (position >= alignment.length) {

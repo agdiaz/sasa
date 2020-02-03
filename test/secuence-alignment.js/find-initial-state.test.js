@@ -10,7 +10,7 @@ const files = [
 
 test('the energy of alignment is 0 when is full equals', () => {
   const sequences = mapPathsToSequences(files);
-  const initialState = findInitialState(sequences)
+  const initialState = findInitialState(sequences);
 
   expect(initialState).toBeDefined();
 });

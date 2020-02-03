@@ -30,7 +30,7 @@ module.exports = ({ sequences, executionResult: alignedSequence }) => {
         logSeq = seq[it].join('').toString();
       }
       console.log(
-        '\x1b[33m' + (1 + index).toString().padStart(3, 'SEQ'), logSeq
+        '\x1b[33m' + (1 + index).toString().padStart(3, 'SEQ'), logSeq,
       );
     });
 

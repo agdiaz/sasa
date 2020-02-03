@@ -8,7 +8,7 @@ const plotLogs = (initialConditions, logs) => {
   const energyData = {x: [], y: [], type: 'line', name: 'energy' };
   const alignData = {x: [], y: [], type: 'line', name: 'align' };
   const initialEnergyDate = {
-    x: [], y: [], type: 'line', name: 'INITIAL ENERGY'
+    x: [], y: [], type: 'line', name: 'INITIAL ENERGY',
   };
   const initialLenght = {x: [], y: [], type: 'line', name: 'INITIAL LENGTH' };
 
@@ -34,7 +34,7 @@ const plotLogs = (initialConditions, logs) => {
   });
 
   plot([
-    temperatureData, energyData, alignData, initialEnergyDate, initialLenght
+    temperatureData, energyData, alignData, initialEnergyDate, initialLenght,
   ]);
 };
 
