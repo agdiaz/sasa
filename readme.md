@@ -1,6 +1,8 @@
 # Sequence Alignment using Simulated Annealing algorithm
 Project created by Adrián Díaz and Roxana Cerretini
 
+![Node.js CI](https://github.com/agdiaz/sasa/workflows/Node.js%20CI/badge.svg?branch=master)
+
 ## Configuration
 Run the following command
 
