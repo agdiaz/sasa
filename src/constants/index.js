@@ -7,6 +7,6 @@ module.exports = {
   DELETE_SYMBOL: '-',
   EVENTS: {
     EXECUTION_STARTED: 'executionStarted',
-    EXECUTION_COMPLETED: 'executionCompleted'
-  }
+    EXECUTION_COMPLETED: 'executionCompleted',
+  },
 };

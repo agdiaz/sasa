@@ -8,17 +8,16 @@ const simulatedAnnealing = require('../simulated-annealing');
 const { EVENTS } = require('../constants');
 
 class Resolver {
-  constructor({ parameters, options, ...args}) {
+  constructor({ parameters, options}) {
     this.eventEmitter = options.eventEmitter;
-    this.otherArgs = args;
     this.sequences = mapPathsToSequences(parameters.files, options.isDebugging);
     this.sequencesStrings = this.sequences.map(seq => seq.set[0].seq.toString());
     this.simulatedAnnealingArgs = {
       parameters: {
         initialTemperature: parameters.initialTemperature,
         iterationsLimit: parameters.iterationsLimit,
-        isDebugging: options.isDebugging
-      }
+        isDebugging: options.isDebugging,
+      },
     };
   }
 
@@ -27,7 +26,7 @@ class Resolver {
       const startTime = new Date();
       this.eventEmitter.emit(EVENTS.EXECUTION_STARTED, {
         execution: time,
-        startTime: startTime
+        startTime: startTime,
       });
 
       const problem = new Problem({ sequences: this.sequences });
@@ -38,7 +37,7 @@ class Resolver {
         startTime: startTime,
         endTime: new Date(),
         sequences: this.sequencesStrings,
-        ...result
+        ...result,
       });
 
       return result;

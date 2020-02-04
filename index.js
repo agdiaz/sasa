@@ -43,10 +43,10 @@ const resolver = new Resolver({
   options: {
     isDebugging: program.debug,
     eventEmitter,
-  }
-})
+  },
+});
 
-const results = resolver.runSimulatedAnnealing(parseInt(program.executions));
+const results = resolver.runSimulatedAnnealing(parseInt(program.executions, 10));
 
 writeResults({
   results,

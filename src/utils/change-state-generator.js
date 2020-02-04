@@ -1,7 +1,6 @@
 'use strict';
 
 const _lodash = require('lodash');
-const { maxLength } = require('./fasta-reader');
 const { DELETE_SYMBOL } = require('../constants');
 
 const findElement = (sequences, position) => {
