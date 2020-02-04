@@ -5,7 +5,7 @@ const { maxLength } = require('./fasta-reader');
 const { DELETE_SYMBOL } = require('../constants');
 
 const findElement = (sequences, position) => {
-  if (position >= maxLength(sequences)) {
+  if (position >= Math.max(...sequences.map(seq => seq.length))) {
     return DELETE_SYMBOL;
   }
 
@@ -54,7 +54,7 @@ const removeElement = count => (_sequences, state, position) => {
   return state;
 };
 
-const randomIndel = () => {
+const changeStateGenerator = () => {
   const dice = Math.ceil(Math.random() * 12);
   const count = Math.ceil(Math.random() * 2);
 
@@ -76,4 +76,4 @@ const randomIndel = () => {
   }
 };
 
-module.exports = randomIndel;
+module.exports = changeStateGenerator;

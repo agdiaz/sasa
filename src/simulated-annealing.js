@@ -3,56 +3,55 @@
 // const eventEmitter = new events.EventEmitter();
 
 const { COOLING_RATE } = require('./constants');
-const COOLING_CONSTANT = 1 - COOLING_RATE;
 
-const simulatedAnnealing = ({
-  initialTemperature,
-  iterationsLimit,
-  problem,
-  findInitialState,
-  findNextState,
-  energyOf,
-  eventEmitter,
-}) => {
-  let currentState = findInitialState(problem);
+const simulatedAnnealing = ({ problem, parameters }) => {
+  const { initialTemperature, iterationsLimit} = parameters;
+  const isStillHot = (currentTemperature, currentTime) =>  currentTemperature > 1 && currentTime < iterationsLimit;
+
+  let currentState = problem.initialState;
+  let currentEnergy = problem.energyOf(currentState);
+
+  // eventEmitter.emit('readyToStart', {
+  //   initialAlignmentLength: currentState.length,
+  //   initialEnergy: currentEnergy,
+  // });
+
   let currentTemperature, currentTime;
-  let currentEnergy;
-
-  eventEmitter.emit('readyToStart', {
-    initialAlignmentLength: currentState.length,
-    initialEnergy: energyOf(problem, currentState),
-  });
-
   for (
     currentTemperature = initialTemperature, currentTime = 0;
-    currentTemperature > 1 && currentTime < iterationsLimit;
-    currentTemperature *= COOLING_CONSTANT, currentTime++
+    isStillHot(currentTemperature, currentTime);
+    currentTemperature *= COOLING_RATE, currentTime++
   ) {
-    currentEnergy = energyOf(problem, currentState);
-    const nextState = findNextState(problem, currentState);
-    const nextStateEnergy = energyOf(problem, nextState);
-
+    const nextState = problem.findNextState(currentState);
+    const nextStateEnergy = problem.energyOf(nextState);
     const deltaEnergy = nextStateEnergy - currentEnergy;
 
     if (deltaEnergy < 0) {
       currentState = nextState;
+      currentEnergy = nextStateEnergy;
     } else {
-      const qExp = -(deltaEnergy * 1.0 / currentTemperature * 1.0);
+      const qExp = -1.0 * (deltaEnergy / currentTemperature);
       const q = Math.min(1.0, Math.pow(Math.E, qExp));
 
-      // if (q < Math.random()) currentState = nextState;
-      if (Math.random() < q) currentState = nextState;
+      if (Math.random() < q) {
+        currentState = nextState;
+        currentEnergy = nextStateEnergy;
+      }
     }
-
-    eventEmitter.emit('iterationCompleted', {
-      currentTime,
-      currentTemperature,
-      currentEnergy,
-      currentAlignmentLength: currentState.length,
-    });
+    // eventEmitter.emit('iterationCompleted', {
+    //   currentTime,
+    //   currentTemperature,
+    //   currentEnergy,
+    //   currentAlignmentLength: currentState.length,
+    // });
   }
 
-  return { currentState, currentEnergy };
+  return {
+    initialState: problem.initialState,
+    initialEnergy: problem.initialEnergy,
+    finalState: currentState.join(''),
+    finalEnergy: currentEnergy
+  };
 };
 
 module.exports = simulatedAnnealing;

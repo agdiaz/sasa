@@ -19,6 +19,7 @@
     "eslint-plugin-jest": "^23.6.0",
     "indent-string": "^4.0.0",
     "lodash": "^4.17.15",
+    "moment": "^2.24.0",
     "nodeplotlib": "^0.6.5"
   },
   "devDependencies": {
