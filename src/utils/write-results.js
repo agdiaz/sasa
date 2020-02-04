@@ -20,7 +20,7 @@ const writeResults = ({ results, sequences, outputFolder }) => {
   const bestEnergy = _lodash.head(energies);
   const worstEnergy = _lodash.last(energies);
 
-  console.log(`Process finished. Range of energies: [${bestEnergy}-${worstEnergy}])\n`)
+  console.log(`Process finished. Range of energies: [${bestEnergy}-${worstEnergy}])\n`);
   resultsFormatter({ sequences, executionResult: bestResult });
 };
 

@@ -10,7 +10,7 @@ module.exports = ({ sequences, executionResult }) => {
   const chunkedResult = _lodash.chunk(alignedSequence, 50);
   const iterations = _lodash.range(0, Math.ceil(maxLength / 50));
 
-  console.log('BEST SEQUENCE')
+  console.log('BEST SEQUENCE');
   console.log('INITIAL ENERGY', executionResult.initialEnergy.toFixed(5));
   console.log('FINAL ENERGY  ', executionResult.finalEnergy.toFixed(5));
 
