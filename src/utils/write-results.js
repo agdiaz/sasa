@@ -16,6 +16,11 @@ const writeResults = ({ results, sequences, outputFolder }) => {
   const bestResult = resultsSortedByLowestEnergy[0];
   fs.writeFileSync(bestResultFilename, JSON.stringify(bestResult));
 
+  const energies = resultsSortedByLowestEnergy.map(result => result.finalEnergy);
+  const bestEnergy = _lodash.head(energies);
+  const worstEnergy = _lodash.last(energies);
+
+  console.log(`Process finished. Range of energies: [${bestEnergy}-${worstEnergy}])\n`)
   resultsFormatter({ sequences, executionResult: bestResult });
 };
 
