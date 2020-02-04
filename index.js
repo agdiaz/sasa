@@ -54,7 +54,6 @@ writeResults({
   sequences: resolver.sequences,
 });
 
-// resultsFormatter(results);
 // plotLogs(initialConditions, eventsLog);
 
 console.log('SASA finished. Press any key to continue.');
