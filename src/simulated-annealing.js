@@ -1,6 +1,4 @@
 'use strict';
-// const events = require('events');
-// const eventEmitter = new events.EventEmitter();
 
 const { COOLING_RATE } = require('./constants');
 
@@ -9,14 +7,9 @@ const simulatedAnnealing = ({ problem, parameters }) => {
   const isStillHot = (currentTemperature, currentTime) =>  currentTemperature > 1 && currentTime < iterationsLimit;
 
   let currentState = problem.initialState;
-  let currentEnergy = problem.energyOf(currentState);
-
-  // eventEmitter.emit('readyToStart', {
-  //   initialAlignmentLength: currentState.length,
-  //   initialEnergy: currentEnergy,
-  // });
-
+  let currentEnergy = problem.initialEnergy;
   let currentTemperature, currentTime;
+
   for (
     currentTemperature = initialTemperature, currentTime = 0;
     isStillHot(currentTemperature, currentTime);
@@ -38,20 +31,16 @@ const simulatedAnnealing = ({ problem, parameters }) => {
         currentEnergy = nextStateEnergy;
       }
     }
-    // eventEmitter.emit('iterationCompleted', {
-    //   currentTime,
-    //   currentTemperature,
-    //   currentEnergy,
-    //   currentAlignmentLength: currentState.length,
-    // });
-  }
+  };
 
-  return {
-    initialState: problem.initialState,
+  const solution = {
+    initialState: problem.initialState.join(''),
     initialEnergy: problem.initialEnergy,
     finalState: currentState.join(''),
     finalEnergy: currentEnergy
   };
+
+  return solution;
 };
 
 module.exports = simulatedAnnealing;

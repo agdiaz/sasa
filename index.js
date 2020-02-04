@@ -10,8 +10,9 @@ const { DEFAULT_TEMP, DEFAULT_ITERATIONS } = require('./src/constants');
 const listenToExecutions = require('./src/utils/listener');
 const collectFiles = require('./src/utils/command-utils');
 const Resolver = require('./src/models/resolver');
-const resultsFormatter = require('./src/utils/results-formatter');
 const executionDatetime = moment().format('YYYY_MM_DD_HH_mm_ss');
+const writeResults = require('./src/utils/write-results');
+
 // const plotLogs = require('./src/utils/plot-logs');
 
 program
@@ -33,7 +34,7 @@ if (program.executions <= 0) {
 const eventEmitter = new events.EventEmitter();
 listenToExecutions(eventEmitter, program.output);
 
-const results = new Resolver({
+const resolver = new Resolver({
   parameters: {
     files: program.input,
     initialTemperature: program.temperature,
@@ -43,12 +44,17 @@ const results = new Resolver({
     isDebugging: program.debug,
     eventEmitter,
   }
-}).runSimulatedAnnealing(program.executions);
+})
+
+const results = resolver.runSimulatedAnnealing(parseInt(program.executions));
+
+writeResults({
+  results,
+  outputFolder: program.output,
+  sequences: resolver.sequences,
+});
 
 // resultsFormatter(results);
-
-// console.log(results.executionResult.currentState.join('').toString());
-
 // plotLogs(initialConditions, eventsLog);
 
 console.log('SASA finished. Press any key to continue.');

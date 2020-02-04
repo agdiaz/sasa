@@ -2,15 +2,16 @@
 const _lodash = require('lodash');
 
 module.exports = ({ sequences, executionResult }) => {
-  const alignedSequence = executionResult.currentState;
+  const alignedSequence = executionResult.finalState;
   const maxLength = Math.max(...sequences.map(sequence =>
     sequence.set[0].seq.length));
   const chunkedSequences = sequences.map(sequence =>
     _lodash.chunk(sequence.set[0].seq.toString(), 50));
-  const chunkedResult = _lodash.chunk(alignedSequence.join(''), 50);
+  const chunkedResult = _lodash.chunk(alignedSequence, 50);
   const iterations = _lodash.range(0, Math.ceil(maxLength / 50));
 
   iterations.forEach(it => {
+    console.log('FINAL ENERGY', executionResult.finalEnergy.toFixed(5));
     console.log('FROM-TO:', it * 50, ((it + 1) * 50) - 1);
     if (it % 2 === 0) {
       console.log('    0         1         2         3         4');

@@ -27,15 +27,13 @@ const listenToExecutions = (eventEmitter, outputFolder) => {
 
   eventEmitter.on(EVENTS.EXECUTION_COMPLETED, (eventArgs) => {
     const { execution } = eventArgs;
-    const filename = `${outputFolder}/execution_${execution.toString().padStart('000')}.json`;
+    const filename = `${outputFolder}/execution_${execution.toString().padStart(3, '0')}.json`;
 
     if (fs.existsSync(filename)) {
       fs.appendFileSync(filename, JSON.stringify(eventArgs));
     } else {
       fs.writeFileSync(filename, JSON.stringify(eventArgs));
     };
-
-    console.log(EVENTS.EXECUTION_COMPLETED, eventArgs);
   });
 };
 
