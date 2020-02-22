@@ -8,7 +8,7 @@ const resultsFormatter = require('./results-formatter');
 
 const writeResults = ({ results, sequences, outputFolder }) => {
   const resultsSortedByLowestEnergy = _lodash.orderBy(results, result => result.finalEnergy, 'asc').map(r => {
-    return _lodash.pick(r, ["initialState", "initialEnergy", "finalState", "finalEnergy"]);
+    return _lodash.pick(r, ['initialState', 'initialEnergy', 'finalState', 'finalEnergy']);
   });
 
   const resultsFilename = `${outputFolder}/results.csv`;
