@@ -3,6 +3,7 @@
 const { COOLING_RATE } = require('./constants');
 
 const simulatedAnnealing = ({ problem, parameters }) => {
+  const executionLogs = [];
   const { initialTemperature, iterationsLimit} = parameters;
   const isStillHot = (currentTemperature, currentTime) => currentTemperature > 1 && currentTime < iterationsLimit;
 
@@ -15,6 +16,8 @@ const simulatedAnnealing = ({ problem, parameters }) => {
     isStillHot(currentTemperature, currentTime);
     currentTemperature *= COOLING_RATE, currentTime++
   ) {
+    executionLogs.push({ currentTemperature, currentTime, currentEnergy });
+
     const nextState = problem.findNextState(currentState);
     const nextStateEnergy = problem.energyOf(nextState);
     const deltaEnergy = nextStateEnergy - currentEnergy;
@@ -38,6 +41,7 @@ const simulatedAnnealing = ({ problem, parameters }) => {
     initialEnergy: problem.initialEnergy,
     finalState: currentState.join(''),
     finalEnergy: currentEnergy,
+    executionLogs,
   };
 
   return solution;
