@@ -64,14 +64,17 @@ const changeStateGenerator = () => {
     case 3:
     case 4:
     case 5:
-      return changeElement;
     case 6:
+      return changeElement;
     case 7:
-      return addInsert(count);
     case 8:
-      return addDelete(1);
+    case 9:
+    case 10:
+      return addInsert(count);
+    case 11:
+        return addDelete(1);
     default:
-      return keepElement;
+      return removeElement(1);
   }
 };
 

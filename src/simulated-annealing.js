@@ -5,7 +5,7 @@ const { COOLING_RATE } = require('./constants');
 const simulatedAnnealing = ({ problem, parameters }) => {
   const executionLogs = [];
   const { initialTemperature, iterationsLimit} = parameters;
-  const isStillHot = (currentTemperature, currentTime) => currentTemperature > 1 && currentTime < iterationsLimit;
+  const isStillHot = (currentTemperature, currentTime) => currentTemperature > 0.1 && currentTime < iterationsLimit;
 
   let currentState = problem.initialState;
   let currentEnergy = problem.initialEnergy;
@@ -18,20 +18,30 @@ const simulatedAnnealing = ({ problem, parameters }) => {
   ) {
     executionLogs.push({ currentTemperature, currentTime, currentEnergy });
 
-    const nextState = problem.findNextState(currentState);
-    const nextStateEnergy = problem.energyOf(nextState);
-    const deltaEnergy = nextStateEnergy - currentEnergy;
+    let newState = currentState;
+    let newEnergy = currentEnergy;
 
-    if (deltaEnergy < 0) {
-      currentState = nextState;
-      currentEnergy = nextStateEnergy;
+    for(let i = 0; i < 50; i++) {
+      const nextState = problem.findNextState(newState);
+      const nextStateEnergy = problem.energyOf(nextState);
+      const deltaEnergy = nextStateEnergy - newEnergy;
+
+      if (deltaEnergy <= 0) {
+        newState = nextState;
+        newEnergy = nextStateEnergy;
+      }
+    }
+
+    if (newEnergy - currentEnergy <= 0) {
+      currentState = newState;
+      currentEnergy = newEnergy;
     } else {
-      const qExp = -1.0 * (deltaEnergy / currentTemperature);
-      const q = Math.min(1.0, Math.pow(Math.E, qExp));
+      const qExp = (-1.0 * (newEnergy - currentEnergy) / currentTemperature);
+      const q = Math.pow(Math.E, qExp);
 
-      if (Math.random() < q) {
-        currentState = nextState;
-        currentEnergy = nextStateEnergy;
+      if (q > Math.random()) {
+        currentState = newState;
+        currentEnergy = newEnergy;
       }
     }
   };
