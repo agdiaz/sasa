@@ -3,10 +3,10 @@
 const fs = require('fs');
 const { FastaUtils } = require('bioseq-ts');
 
-const mapPathsToSequences = (files, isDebugging = false) => {
+const mapPathsToSequences = (filePaths, isDebugging = false) => {
   const fastaSequences = [];
 
-  files.forEach(filePath => {
+  filePaths.forEach(filePath => {
     const fileStats = fs.lstatSync(filePath);
 
     if (fileStats.isDirectory()) {

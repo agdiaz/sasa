@@ -29,18 +29,18 @@ class Resolver {
         startTime: startTime,
       });
 
-      const problem = new Problem({ sequences: this.sequences });
-      const result = simulatedAnnealing({ problem, ...this.simulatedAnnealingArgs });
+      const problem = new Problem({ sequences: this.sequencesStrings });
+      const solution = simulatedAnnealing({ problem, ...this.simulatedAnnealingArgs });
 
       this.eventEmitter.emit(EVENTS.EXECUTION_COMPLETED, {
         execution: time,
         startTime: startTime,
         endTime: new Date(),
         sequences: this.sequencesStrings,
-        ...result,
+        ...solution,
       });
 
-      return result;
+      return solution;
     });
 
     return executionResults;

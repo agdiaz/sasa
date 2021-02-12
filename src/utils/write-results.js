@@ -8,7 +8,7 @@ const resultsFormatter = require('./results-formatter');
 
 const writeResults = ({ results, sequences, outputFolder }) => {
   const resultsSortedByLowestEnergy = _lodash.orderBy(results, result => result.finalEnergy, 'asc').map(r => {
-    return _lodash.pick(r, ['initialState', 'initialEnergy', 'finalState', 'finalEnergy']);
+    return _lodash.pick(r, ['initialState', 'initialEnergy', 'finalState', 'finalEnergy', 'initialSequence', 'finalSequence']);
   });
 
   const resultsFilename = `${outputFolder}/results.csv`;
@@ -28,7 +28,8 @@ const writeResults = ({ results, sequences, outputFolder }) => {
   const worstEnergy = _lodash.last(energies);
 
   console.log(`Process finished. Range of energies: [${bestEnergy}-${worstEnergy}])\n`);
-  resultsFormatter({ sequences, executionResult: bestResult });
+  
+  resultsFormatter({ executionResult: bestResult });
 };
 
 module.exports = writeResults;

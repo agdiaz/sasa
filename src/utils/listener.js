@@ -3,21 +3,9 @@ const fs = require('fs');
 
 const { EVENTS } = require('../constants');
 
-// const eventsLog = [];
-// let initialConditions;
-
-// eventEmitter.addListener('readyToStart', (event) => {
-//   initialConditions = event;
-// });
-
-// eventEmitter.addListener('iterationCompleted', (event) => {
-//   eventsLog.push(event);
-//   if (program.debug) console.debug('iterationCompleted', event);
-// });
-
 const listenToExecutions = (eventEmitter, outputFolder) => {
   if (!fs.existsSync(outputFolder)){
-    console.log('Creating output folder');
+    console.log('Creating output folder', outputFolder);
     fs.mkdirSync(outputFolder, { recursive: true });
   }
 

@@ -2,7 +2,7 @@
 
 const _lodash = require('lodash');
 
-const changeStateGenerator = require('../utils/change-state-generator');
+const { addDeletion, removeDeletion } = require('../utils/change-state-generator');
 const energyOfMatches = require('../utils/energy');
 
 const { DELETE_SYMBOL } = require('../constants');
@@ -10,38 +10,71 @@ const { DELETE_SYMBOL } = require('../constants');
 class Problem {
   constructor({ sequences }) {
     this.sequences = sequences;
-    this.sequencesContentsSplitedByPosition = sequences.map(seq => seq.set[0].seq.split(''));
-    this.initialState = this.findInitialState();
-    this.initialEnergy = this.energyOf(this.initialState);
+    this.sequencesContentsSplittedByPosition = this.sequences.map(seq => seq.split(''));
+    this.initialState = this.findInitialAlignment();
+    // this.initialSequence = this.consensusSequence(this.initialState);
+    // this.initialEnergy = this.energyOf(this.initialSequence, this.initialState);
   }
 
-  findInitialState() {
-    const sequenceLengths = this.sequencesContentsSplitedByPosition.map(seq => seq.length);
+  findInitialAlignment() {
+    let initial = this.shuffle(this.sequencesContentsSplittedByPosition);
+    return this.addPadding(initial);
+  }
+
+  shuffle(sequences) {
+    return _lodash.shuffle(sequences);
+  }
+
+  addPadding(sequences) {
+    let currentPadding = 0;
+
+    sequences.forEach(seq => {
+      const deltaPadding = Math.floor(Math.random() * seq.length);
+
+      for(let paddingIndex = 0; paddingIndex < currentPadding; paddingIndex++) {
+        seq.unshift(DELETE_SYMBOL);
+      }
+
+      currentPadding += deltaPadding;
+    });
+
+    return sequences;
+  }
+
+  consensusSequence(sequences) {
+    const sequenceLengths = sequences.map(seq => seq.length);
     const maxSequenceLength = Math.max(...sequenceLengths);
-    const initialState = Array(maxSequenceLength);
-
+    const consensus = [];
+    
     for (let index = 0; index < maxSequenceLength; index++) {
-      const randomSequence = _lodash.sample(this.sequencesContentsSplitedByPosition);
-      const possibleValues = (index < randomSequence.length)
-        ? [randomSequence[index], DELETE_SYMBOL]
-        : [DELETE_SYMBOL];
-
-      initialState[index] = _lodash.sample(possibleValues);
+      const positionValues = _lodash.without(sequences.map(seq => seq[index]), undefined, null, DELETE_SYMBOL);
+      const mostRepeatedValue = _lodash.head(_lodash(positionValues).countBy().entries().maxBy(_lodash.last));
+      
+      if (mostRepeatedValue !== undefined) {
+        consensus.push(mostRepeatedValue);
+      } else {
+        consensus.push('n');
+      }
     }
 
-    return initialState;
-  };
+    return consensus;
+  }
 
   findNextState(state) {
     const nextState = [...state];
-    const randomIndex = Math.floor(Math.random() * state.length);
-    const changeState = changeStateGenerator();
-
-    return changeState(this.sequences, nextState, randomIndex);
+    const randomSequenceIndex = Math.floor(Math.random() * state.length);
+    
+    if (Math.random() < 0.33) {
+      return addDeletion(nextState, randomSequenceIndex)
+    } else {
+      return removeDeletion(nextState, randomSequenceIndex)
+    }
   };
 
-  energyOf(state) {
-    return energyOfMatches(state, this.sequencesContentsSplitedByPosition);
+  energyOf(stateSequences) {
+    const sequence = this.consensusSequence(stateSequences);
+    
+    return energyOfMatches(sequence, stateSequences);
   };
 };
 
