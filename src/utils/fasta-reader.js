@@ -4,14 +4,28 @@ const fs = require('fs');
 const { FastaUtils } = require('bioseq-ts');
 
 const mapPathsToSequences = (files, isDebugging = false) => {
-  return files.map(filePath => {
-    const sequenceData = fs.readFileSync(filePath).toString();
-    const bioSeqSet = new FastaUtils().parse(sequenceData);
+  const fastaSequences = [];
 
-    if (isDebugging) console.debug(bioSeqSet);
+  files.forEach(filePath => {
+    const fileStats = fs.lstatSync(filePath);
 
-    return bioSeqSet;
+    if (fileStats.isDirectory()) {
+      const folderFiles = fs.readdirSync(filePath).map(folderFileName => `${filePath}/${folderFileName}`);
+
+      mapPathsToSequences(folderFiles, isDebugging).forEach(seq => {
+        fastaSequences.push(seq);
+      });
+    } else {
+      const sequenceData = fs.readFileSync(filePath).toString();
+      const bioSeqSet = new FastaUtils().parse(sequenceData);
+
+      if (isDebugging) console.debug(bioSeqSet);
+
+      fastaSequences.push(bioSeqSet);
+    }
   });
+
+  return fastaSequences;
 };
 
 module.exports = { mapPathsToSequences };

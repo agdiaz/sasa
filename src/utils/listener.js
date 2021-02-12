@@ -18,7 +18,7 @@ const { EVENTS } = require('../constants');
 const listenToExecutions = (eventEmitter, outputFolder) => {
   if (!fs.existsSync(outputFolder)){
     console.log('Creating output folder');
-    fs.mkdirSync(outputFolder);
+    fs.mkdirSync(outputFolder, { recursive: true });
   }
 
   eventEmitter.on(EVENTS.EXECUTION_STARTED, (eventArgs) => {
