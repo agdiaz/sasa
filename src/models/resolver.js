@@ -2,7 +2,6 @@
 
 const _lodash = require('lodash');
 
-const Problem = require('./problem');
 const { mapPathsToSequences } = require('../utils/fasta-reader');
 const simulatedAnnealing = require('../simulated-annealing');
 const { EVENTS } = require('../constants');
@@ -29,8 +28,7 @@ class Resolver {
         startTime: startTime,
       });
 
-      const problem = new Problem({ sequences: this.sequencesStrings });
-      const solution = simulatedAnnealing({ problem, ...this.simulatedAnnealingArgs });
+      const solution = simulatedAnnealing({ sequences: this.sequencesStrings, ...this.simulatedAnnealingArgs });
 
       this.eventEmitter.emit(EVENTS.EXECUTION_COMPLETED, {
         execution: time,

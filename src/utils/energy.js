@@ -1,27 +1,22 @@
 'use strict';
 
-const { DELETE_SYMBOL_PENALTY, DELETE_SYMBOL } = require('../constants');
+const _lodash = require('lodash');
+const { DELETE_SYMBOL } = require('../constants');
 
-const energyOf = (consensusSequence, sequences) => {
-  const maxSequenceLength = Math.max(consensusSequence.length, ...sequences.map(s => s.length));
-  let positionEnergies = 0;
+const energyOf = (sequences) => {
+  const maxSequenceLength = Math.max(...sequences.map(s => s.length));
+  let totalEnergy = 0;
 
   for (let positionIndex = 0; positionIndex < maxSequenceLength; positionIndex++) {
-    if (positionIndex < consensusSequence.length) {
-      const targetValue = consensusSequence[positionIndex];
+    const positionValues = sequences.map(seq => seq[positionIndex]);
+    const deletionCount = positionValues.filter(v => v === DELETE_SYMBOL).length
 
-      if (targetValue === DELETE_SYMBOL || targetValue === 'n') {
-        positionEnergies += DELETE_SYMBOL_PENALTY;
-      } else {
-        const positionValues = sequences.map(seq => seq[positionIndex]).filter(value => value !== targetValue);
-        positionEnergies += positionValues.length;
-      }
-    } else {
-      positionEnergies += DELETE_SYMBOL_PENALTY;
-    }
+    const groups = Object.keys(_lodash.countBy(positionValues)).length;
+
+    totalEnergy += (groups - 1) + deletionCount;
   }
 
-  return positionEnergies;
-};
+  return totalEnergy;
+}
 
 module.exports = energyOf;

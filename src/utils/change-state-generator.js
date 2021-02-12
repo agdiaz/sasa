@@ -1,10 +1,8 @@
 'use strict';
 
-const _lodash = require('lodash');
 const { DELETE_SYMBOL } = require('../constants');
 
-const addDeletion = (state, sequenceIndex) => {
-  const sequence = state[sequenceIndex];
+const addDeletion = (sequence) => {
   const randomSplitter = Math.random();
 
   let position;
@@ -16,12 +14,10 @@ const addDeletion = (state, sequenceIndex) => {
   
   sequence.splice(position, 0, DELETE_SYMBOL);
 
-  return state;
+  return sequence;
 };
 
-const removeDeletion = (state, sequenceIndex) => {
-  const sequence = state[sequenceIndex];
-
+const removeDeletion = (sequence) => {
   let position;
   if (Math.random() < 0.5) {
     position = sequence.indexOf(DELETE_SYMBOL);
@@ -33,7 +29,7 @@ const removeDeletion = (state, sequenceIndex) => {
     sequence.splice(position, 1);
   }
 
-  return state;
+  return sequence;
 };
 
 module.exports = { removeDeletion, addDeletion };

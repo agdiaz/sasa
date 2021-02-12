@@ -1,75 +1,76 @@
 'use strict';
 
 const energyOf = require('../../src/utils/energy');
+const { consensusSequence } = require('../../src/models/problem');
 
 test('the energy of alignment is 0 when is full equals', () => {
-  const alignment = ['A', 'B', 'C', 'D'];
   const sequences = [
     ['A', 'B', 'C', 'D'], ['A', 'B', 'C', 'D'], ['A', 'B', 'C', 'D'],
   ];
 
-  expect(energyOf(alignment, sequences)).toBe(0);
+  const sequence = consensusSequence(sequences);
+  const expectedEnergy = energyOf(sequences);
+
+  expect(expectedEnergy).toBe(0);
 });
 
-test('the energy of alignment is not 0 when is empty', () => {
-  const alignment = [];
-  const sequences = [['A', 'B', 'C', 'D'], ['A', 'B'], ['A', 'B', 'C']];
+test('the energy of alignment is 0 when is full equals', () => {
+  const sequences = [
+    ['-', 'B', 'C', 'D'], ['A', 'B', 'C', 'D'], ['A', 'B', 'C', 'D'],
+  ];
 
-  expect(energyOf(alignment, sequences)).toBe(4);
+  const sequence = consensusSequence(sequences);
+  const expectedEnergy = energyOf(sequences);
+
+  expect(expectedEnergy).toBe(2);
 });
 
-test('the energy of alignment is higher when is longer than max seq', () => {
-  const alignment = ['A', 'B', 'C', 'D', '-', '-'];
-  const sequences = [['A', 'B', 'C', 'D'], ['A', 'B'], ['A', 'B', 'C']];
+test('weird case', () => {
+  const sequences = [
+    [
+      '-', '-', '-', '-', '-', '-', '-', '-',
+      '-', 'A', 'G', 'C', 'C', 'C', 'T', 'C',
+      'C', 'A', '-', '-', '-', '-', '-', '-',
+      '-', '-', '-', '-', '-', '-', '-', '-',
+      '-', '-', '-', '-', '-', '-', '-', '-',
+      '-', '-', '-', '-', '-', '-', '-', '-',
+      '-', '-'
+    ],
+    [
+      '-', '-', '-', '-', '-', '-', '-', '-',
+      '-', '-', '-', '-', '-', '-', '-', '-',
+      '-', '-', '-', '-', '-', 'A', 'G', 'C',
+      'C', 'C', 'T', 'C', 'C', 'A', '-', '-',
+      '-', '-', '-', '-', '-', '-', '-', '-',
+      '-', '-', '-', '-', '-', '-', '-', '-',
+      '-', '-'
+    ],
+    [
+      '-', '-', '-', '-', '-', '-', '-', '-',
+      '-', '-', '-', '-', '-', '-', '-', '-',
+      '-', '-', '-', '-', '-', '-', '-', '-',
+      '-', '-', 'A', 'G', 'C', 'C', 'C', 'T',
+      'C', 'C', 'A', '-', '-', '-', '-', '-',
+      '-', '-', '-', '-', '-', '-', '-', '-',
+      '-', '-'
+    ]
+  ];
 
-  expect(energyOf(alignment, sequences)).toBe(0 + 0 + 1 / 3 + 2 / 3 + 1 + 1);
+  const sequence = consensusSequence(sequences);
+  const expectedEnergy = energyOf(sequences);
+
+  expect(expectedEnergy).toBe(149);
 });
 
-test('the energy of alignment is higher with dels than max seq', () => {
-  const alignment = ['A', '-', '-', '-', '-', '-'];
-  const sequences = [['A', 'B'], ['A', 'B']];
+test('what is happening here', () => {
+  const sequences = [
+    ['-', '-', '-', '-', '-', '-', '-', 'A', 'G', 'C', 'C', 'C', 'T', 'C', 'C', 'A', '-', '-', '-'],
+    ['-', '-', '-', 'A', 'G', 'C', 'C', 'C', 'T', 'C', 'C', 'A', '-', '-', '-', '-', '-', '-', '-'],
+    ['-', '-', '-', 'A', 'G', 'C', 'C', 'C', 'T', 'C', 'C', 'A', '-', '-', '-', '-', '-', '-', '-'],
+  ];
 
-  expect(energyOf(alignment, sequences)).toBe(0 + 1 + 1 + 1 + 1 + 1);
-});
+  const sequence = consensusSequence(sequences);
+  const expectedEnergy = energyOf(sequences);
 
-test('the energy of alignment is higher when is shorter than max seq', () => {
-  const alignment = ['A', 'B'];
-  const sequences = [['A', 'C'], ['A', 'B', 'C', 'D', 'E', 'F']];
-
-  expect(energyOf(alignment, sequences)).toBe(0 + 0.5 + 1 + 1 + 1 + 1);
-});
-
-test('energy of alignment of 1 element', () => {
-  const alignment = ['A'];
-  const sequences = [['A'], ['B'], ['C']];
-
-  expect(energyOf(alignment, sequences)).toBe(2 / 3);
-});
-
-test('energy of alignment of 2 elements', () => {
-  const alignment = ['A', 'C'];
-  const sequences = [['A', 'A'], ['B', 'B'], ['C', 'C']];
-
-  expect(energyOf(alignment, sequences)).toBe(2 / 3 + 2 / 3);
-});
-
-test('energy of alignment of 3 element', () => {
-  const alignment = ['A', 'C', 'X'];
-  const sequences = [['A', 'A', 'Y'], ['B', 'B', 'Y'], ['C', 'C', 'Y']];
-
-  expect(energyOf(alignment, sequences)).toBe(2 / 3 + 2 / 3 + 1);
-});
-
-test('energy of alignment of 3 elements with variant lengths', () => {
-  const alignment = ['A', 'C', 'X'];
-  const sequences = [['A', 'A', 'Y'], ['B'], ['C', 'C']];
-
-  expect(energyOf(alignment, sequences)).toBe(2 / 3 + 2 / 3 + 1);
-});
-
-test('energy of alignment of 3 elements with deletes', () => {
-  const alignment = ['A', '-', 'C'];
-  const sequences = [['A', 'B', 'C'], ['A', 'B', 'C'], ['A', 'B', 'C']];
-
-  expect(energyOf(alignment, sequences)).toBe(1);
+  expect(expectedEnergy).toBe(41);
 });
