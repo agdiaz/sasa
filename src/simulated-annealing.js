@@ -23,24 +23,18 @@ const findBestNeighbor = (currentState, currentEnergy) => {
 }
 
 const simulatedAnnealing = ({ sequences, parameters: { initialTemperature, iterationsLimit} }) => {
-  const executionLogs = [];
   const isStillHot = (currentTemperature, currentIteration) => currentTemperature > LOWEST_TEMP && currentIteration < iterationsLimit;
   
-  const initialState = findInitialAlignment(sequences); // 9 14 20
+  const initialState = findInitialAlignment(sequences);
   const initialEnergy = energyOfMatches(initialState);
 
   let currentState = initialState.map(identity);
   let currentEnergy = initialEnergy;
 
   for (let currentTemperature = initialTemperature, currentIteration = 0; isStillHot(currentTemperature, currentIteration); currentTemperature *= COOLING_RATE, currentIteration++) {
-    executionLogs.push({ currentTemperature, currentIteration, currentEnergy });
-    
     const { bestNeighborState, bestNeighborEnergy } = findBestNeighbor(currentState, currentEnergy);
-    
-    // console.log({ currentTemperature, currentIteration, currentEnergy, bestNeighborEnergy })
 
     if (bestNeighborEnergy < currentEnergy) {
-      console.log('replacing', { initialEnergy, currentEnergy, bestNeighborEnergy });
       currentState = bestNeighborState.map(identity);
       currentEnergy = bestNeighborEnergy;
     } else {
@@ -48,11 +42,12 @@ const simulatedAnnealing = ({ sequences, parameters: { initialTemperature, itera
       const q = Math.pow(Math.E, qExp);
 
       if (Math.random() < q) {
-        console.log('replacing by q', { currentState, bestNeighborState });
         currentState = bestNeighborState.map(identity);
         currentEnergy = bestNeighborEnergy;
       }
     }
+
+    if (currentEnergy === 0) break;
   }
 
   const solution = {
@@ -63,10 +58,8 @@ const simulatedAnnealing = ({ sequences, parameters: { initialTemperature, itera
     finalSequence: consensusSequence(currentState).join(''),
     finalEnergy: currentEnergy,
     finalEnergyCalc: energyOfMatches(currentState),
-    executionLogs,
   };
 
-  console.log(solution);
   return solution;
 };
 

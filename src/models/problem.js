@@ -5,7 +5,7 @@ const _lodash = require('lodash');
 const { addDeletion, removeDeletion } = require('../utils/change-state-generator');
 const identity = require('../utils/clone-array');
 
-const { DELETE_SYMBOL } = require('../constants');
+const { DELETE_SYMBOL, PROBABILITY_ADD_DELETION, PROBABILITY_REMOVE_DELETION } = require('../constants');
 
 const addPadding = (sequences) => {
   let currentPadding = 0;
@@ -50,9 +50,9 @@ const changeSequences = (sequences) => {
   changedSequences.forEach((state) => {
     const random = Math.random();
 
-    if (random < 0.50) {
+    if (random < PROBABILITY_ADD_DELETION) {
       return addDeletion(state)
-    } else if (random < 1) {
+    } else if (random < PROBABILITY_REMOVE_DELETION) {
       return removeDeletion(state)
     } else {
       return state;

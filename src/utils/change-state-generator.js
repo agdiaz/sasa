@@ -1,12 +1,10 @@
 'use strict';
 
-const { DELETE_SYMBOL } = require('../constants');
+const { DELETE_SYMBOL, PROBABILITY_POSITION_BEGIN } = require('../constants');
 
 const addDeletion = (sequence) => {
-  const randomSplitter = Math.random();
-
   let position;
-  if (randomSplitter < 0.5) {
+  if (Math.random() < PROBABILITY_POSITION_BEGIN) {
     position = 0;
   } else {
     position = sequence.length;    
@@ -19,7 +17,7 @@ const addDeletion = (sequence) => {
 
 const removeDeletion = (sequence) => {
   let position;
-  if (Math.random() < 0.5) {
+  if (Math.random() < PROBABILITY_POSITION_BEGIN) {
     position = sequence.indexOf(DELETE_SYMBOL);
   } else {
     position = sequence.lastIndexOf(DELETE_SYMBOL);

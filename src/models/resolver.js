@@ -8,7 +8,6 @@ const { EVENTS } = require('../constants');
 
 class Resolver {
   constructor({ parameters, options}) {
-    this.eventEmitter = options.eventEmitter;
     this.sequences = mapPathsToSequences(parameters.files, options.isDebugging);
     this.sequencesStrings = this.sequences.map(seq => seq.set[0].seq.toString());
     this.simulatedAnnealingArgs = {
@@ -22,21 +21,7 @@ class Resolver {
 
   runSimulatedAnnealing(times) {
     const executionResults = _lodash.range(0, times).map(time => {
-      const startTime = new Date();
-      this.eventEmitter.emit(EVENTS.EXECUTION_STARTED, {
-        execution: time,
-        startTime: startTime,
-      });
-
       const solution = simulatedAnnealing({ sequences: this.sequencesStrings, ...this.simulatedAnnealingArgs });
-
-      this.eventEmitter.emit(EVENTS.EXECUTION_COMPLETED, {
-        execution: time,
-        startTime: startTime,
-        endTime: new Date(),
-        sequences: this.sequencesStrings,
-        ...solution,
-      });
 
       return solution;
     });

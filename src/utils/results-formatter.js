@@ -2,7 +2,7 @@
 const _lodash = require('lodash');
 
 module.exports = ({ executionResult }) => {
-  const sequences = executionResult.finalState.map(seq => seq.join('')); 
+  const sequences = executionResult.finalState; 
 
   const initialAlignedSequence = executionResult.initialSequence;
   const alignedSequence = executionResult.finalSequence;
