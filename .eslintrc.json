@@ -1,21 +1,21 @@
 {
-  "extends": "strongloop",
-  "parserOptions": {
-    "ecmaVersion": 2018
-  },
   "env": {
+    "browser": true,
+    "commonjs": true,
     "es6": true,
     "jest/globals": true
   },
-  "plugins": [
-    "jest"
-  ],
+  "extends": ["standard", "prettier"],
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly"
+  },
+  "parserOptions": {
+    "ecmaVersion": 2018
+  },
   "rules": {
-    "max-len": ["error", { "code": 120, "tabWidth": 2 }],
-    "jest/no-disabled-tests": "warn",
-    "jest/no-focused-tests": "error",
-    "jest/no-identical-title": "error",
-    "jest/prefer-to-have-length": "warn",
-    "jest/valid-expect": "error"
-  }
+    "quotes": ["error", "double"],
+    "indent": ["error", 2]
+  },
+  "plugins": ["jest"]
 }

@@ -1,5 +1,5 @@
-'use strict';
+"use strict"
 
-const collect = (value, previous = []) => previous.concat([value]);
+const collect = (value, previous = []) => previous.concat([value])
 
-module.exports = collect;
+module.exports = collect

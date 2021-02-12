@@ -1,3 +1,3 @@
-const identity = (x) => x.slice();
+const identity = (x) => x.slice()
 
-module.exports = identity;
+module.exports = identity
