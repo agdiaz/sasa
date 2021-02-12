@@ -55,9 +55,8 @@ const simulatedAnnealing = ({ sequences, parameters: { initialTemperature, itera
     initialEnergy,
     initialSequence: consensusSequence(initialState).join(''),
     finalState: currentState,
-    finalSequence: consensusSequence(currentState).join(''),
     finalEnergy: currentEnergy,
-    finalEnergyCalc: energyOfMatches(currentState),
+    finalSequence: consensusSequence(currentState).join(''),
   };
 
   return solution;
