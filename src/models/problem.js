@@ -1,69 +1,84 @@
-'use strict';
+"use strict"
 
-const _lodash = require('lodash');
+const _lodash = require("lodash")
 
-const { addDeletion, removeDeletion } = require('../utils/change-state-generator');
-const identity = require('../utils/clone-array');
+const {
+  addDeletion,
+  removeDeletion,
+} = require("../utils/change-state-generator")
+const identity = require("../utils/clone-array")
 
-const { DELETE_SYMBOL, PROBABILITY_ADD_DELETION, PROBABILITY_REMOVE_DELETION } = require('../constants');
+const {
+  DELETE_SYMBOL,
+  PROBABILITY_ADD_DELETION,
+  PROBABILITY_REMOVE_DELETION,
+} = require("../constants")
 
 const addPadding = (sequences) => {
-  let currentPadding = 0;
+  let currentPadding = 0
 
-  sequences.forEach(seq => {
-    const deltaPadding = Math.floor(Math.random() * seq.length);
+  sequences.forEach((seq) => {
+    const deltaPadding = Math.floor(Math.random() * seq.length)
 
-    for(let paddingIndex = 0; paddingIndex < currentPadding; paddingIndex++) {
-      seq.unshift(DELETE_SYMBOL);
+    for (let paddingIndex = 0; paddingIndex < currentPadding; paddingIndex++) {
+      seq.unshift(DELETE_SYMBOL)
     }
 
-    currentPadding += deltaPadding;
-  });
+    currentPadding += deltaPadding
+  })
 
-  return sequences;
+  return sequences
 }
 
-const findInitialAlignment = (sequences) => addPadding(_lodash.shuffle(sequences.map(seq => seq.split(''))));
+const findInitialAlignment = (sequences) =>
+  addPadding(_lodash.shuffle(sequences.map((seq) => seq.split(""))))
 
 const consensusSequence = (sequences) => {
-  const sequenceLengths = sequences.map(seq => seq.length);
-  const maxSequenceLength = Math.max(...sequenceLengths);
-  const consensus = [];
-  
+  const sequenceLengths = sequences.map((seq) => seq.length)
+  const maxSequenceLength = Math.max(...sequenceLengths)
+  const consensus = []
+
   for (let index = 0; index < maxSequenceLength; index++) {
-    const positionValues = _lodash.without(sequences.map(seq => seq[index]), undefined, null, DELETE_SYMBOL);
-    const mostRepeatedValue = _lodash.head(_lodash(positionValues).countBy().entries().maxBy(_lodash.last));
-    
+    const positionValues = _lodash.without(
+      sequences.map((seq) => seq[index]),
+      undefined,
+      null,
+      DELETE_SYMBOL
+    )
+    const mostRepeatedValue = _lodash.head(
+      _lodash(positionValues).countBy().entries().maxBy(_lodash.last)
+    )
+
     if (mostRepeatedValue !== undefined) {
-      consensus.push(mostRepeatedValue);
+      consensus.push(mostRepeatedValue)
     } else {
-      consensus.push(DELETE_SYMBOL);
+      consensus.push(DELETE_SYMBOL)
     }
   }
 
-  return consensus;
+  return consensus
 }
 
 const changeSequences = (sequences) => {
-  const changedSequences = sequences.map(identity);
-  
+  const changedSequences = sequences.map(identity)
+
   changedSequences.forEach((state) => {
-    const random = Math.random();
+    const random = Math.random()
 
     if (random < PROBABILITY_ADD_DELETION) {
       return addDeletion(state)
     } else if (random < PROBABILITY_REMOVE_DELETION) {
       return removeDeletion(state)
     } else {
-      return state;
+      return state
     }
   })
 
-  return changedSequences;
-};
+  return changedSequences
+}
 
 module.exports = {
   findInitialAlignment,
   consensusSequence,
   changeSequences,
-};
+}

@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint --ignore-path .gitignore .",
+    "lint:fix": "eslint --ignore-path .gitignore . --fix",
     "test": "jest",
     "test:debug": "node --inspect node_modules/.bin/jest --runInBand",
     "start": "node index.js $*"
@@ -16,7 +17,8 @@
     "chalk": "^3.0.0",
     "commander": "^4.1.0",
     "each-async": "^1.1.1",
-    "eslint-plugin-jest": "^23.6.0",
+    "eslint-config-prettier": "^7.2.0",
+    "eslint-plugin-jest": "^23.20.0",
     "indent-string": "^4.0.0",
     "json2csv": "^4.5.4",
     "lodash": "^4.17.15",
@@ -24,8 +26,13 @@
     "nodeplotlib": "^0.6.5"
   },
   "devDependencies": {
-    "eslint": "^6.8.0",
+    "eslint": "^7.20.0",
+    "eslint-config-standard": "^16.0.2",
     "eslint-config-strongloop": "^2.1.0",
-    "jest": "^25.1.0"
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.3.1",
+    "jest": "^25.1.0",
+    "prettier": "2.2.1"
   }
 }

@@ -1,17 +1,17 @@
-const { DELETE_SYMBOL } = require("../constants");
+const { DELETE_SYMBOL } = require("../constants")
 
 const formatSequences = (sequences) => {
-  const maxSequenceLength = Math.max(...sequences.map(seq => seq.length));
+  const maxSequenceLength = Math.max(...sequences.map((seq) => seq.length))
 
-  return sequences.map(seq => {
-    trailingLength = maxSequenceLength - seq.length;
+  return sequences.map((seq) => {
+    const trailingLength = maxSequenceLength - seq.length
 
-    for(let i = 0; i < trailingLength; i++) {
-      seq.push(DELETE_SYMBOL);
+    for (let i = 0; i < trailingLength; i++) {
+      seq.push(DELETE_SYMBOL)
     }
 
-    return seq;
+    return seq
   })
-};
+}
 
-module.exports = formatSequences;
+module.exports = formatSequences

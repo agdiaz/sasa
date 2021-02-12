@@ -1,76 +1,264 @@
-'use strict';
+"use strict"
 
-const energyOf = require('../../src/utils/energy');
-const { consensusSequence } = require('../../src/models/problem');
+const energyOf = require("../../src/utils/energy")
 
-test('the energy of alignment is 0 when is full equals', () => {
+test("the energy of alignment is 0 when is full equals", () => {
   const sequences = [
-    ['A', 'B', 'C', 'D'], ['A', 'B', 'C', 'D'], ['A', 'B', 'C', 'D'],
-  ];
+    ["A", "B", "C", "D"],
+    ["A", "B", "C", "D"],
+    ["A", "B", "C", "D"],
+  ]
 
-  const sequence = consensusSequence(sequences);
-  const expectedEnergy = energyOf(sequences);
+  const expectedEnergy = energyOf(sequences)
 
-  expect(expectedEnergy).toBe(0);
-});
+  expect(expectedEnergy).toBe(0)
+})
 
-test('the energy of alignment is 0 when is full equals', () => {
+test("the energy of alignment is 0 when is full equals", () => {
   const sequences = [
-    ['-', 'B', 'C', 'D'], ['A', 'B', 'C', 'D'], ['A', 'B', 'C', 'D'],
-  ];
+    ["-", "B", "C", "D"],
+    ["A", "B", "C", "D"],
+    ["A", "B", "C", "D"],
+  ]
 
-  const sequence = consensusSequence(sequences);
-  const expectedEnergy = energyOf(sequences);
+  const expectedEnergy = energyOf(sequences)
 
-  expect(expectedEnergy).toBe(2);
-});
+  expect(expectedEnergy).toBe(2)
+})
 
-test('weird case', () => {
+test("weird case", () => {
   const sequences = [
     [
-      '-', '-', '-', '-', '-', '-', '-', '-',
-      '-', 'A', 'G', 'C', 'C', 'C', 'T', 'C',
-      'C', 'A', '-', '-', '-', '-', '-', '-',
-      '-', '-', '-', '-', '-', '-', '-', '-',
-      '-', '-', '-', '-', '-', '-', '-', '-',
-      '-', '-', '-', '-', '-', '-', '-', '-',
-      '-', '-'
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "A",
+      "G",
+      "C",
+      "C",
+      "C",
+      "T",
+      "C",
+      "C",
+      "A",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
     ],
     [
-      '-', '-', '-', '-', '-', '-', '-', '-',
-      '-', '-', '-', '-', '-', '-', '-', '-',
-      '-', '-', '-', '-', '-', 'A', 'G', 'C',
-      'C', 'C', 'T', 'C', 'C', 'A', '-', '-',
-      '-', '-', '-', '-', '-', '-', '-', '-',
-      '-', '-', '-', '-', '-', '-', '-', '-',
-      '-', '-'
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "A",
+      "G",
+      "C",
+      "C",
+      "C",
+      "T",
+      "C",
+      "C",
+      "A",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
     ],
     [
-      '-', '-', '-', '-', '-', '-', '-', '-',
-      '-', '-', '-', '-', '-', '-', '-', '-',
-      '-', '-', '-', '-', '-', '-', '-', '-',
-      '-', '-', 'A', 'G', 'C', 'C', 'C', 'T',
-      'C', 'C', 'A', '-', '-', '-', '-', '-',
-      '-', '-', '-', '-', '-', '-', '-', '-',
-      '-', '-'
-    ]
-  ];
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "A",
+      "G",
+      "C",
+      "C",
+      "C",
+      "T",
+      "C",
+      "C",
+      "A",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+    ],
+  ]
 
-  const sequence = consensusSequence(sequences);
-  const expectedEnergy = energyOf(sequences);
+  const expectedEnergy = energyOf(sequences)
 
-  expect(expectedEnergy).toBe(149);
-});
+  expect(expectedEnergy).toBe(149)
+})
 
-test('what is happening here', () => {
+test("what is happening here", () => {
   const sequences = [
-    ['-', '-', '-', '-', '-', '-', '-', 'A', 'G', 'C', 'C', 'C', 'T', 'C', 'C', 'A', '-', '-', '-'],
-    ['-', '-', '-', 'A', 'G', 'C', 'C', 'C', 'T', 'C', 'C', 'A', '-', '-', '-', '-', '-', '-', '-'],
-    ['-', '-', '-', 'A', 'G', 'C', 'C', 'C', 'T', 'C', 'C', 'A', '-', '-', '-', '-', '-', '-', '-'],
-  ];
+    [
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "A",
+      "G",
+      "C",
+      "C",
+      "C",
+      "T",
+      "C",
+      "C",
+      "A",
+      "-",
+      "-",
+      "-",
+    ],
+    [
+      "-",
+      "-",
+      "-",
+      "A",
+      "G",
+      "C",
+      "C",
+      "C",
+      "T",
+      "C",
+      "C",
+      "A",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+    ],
+    [
+      "-",
+      "-",
+      "-",
+      "A",
+      "G",
+      "C",
+      "C",
+      "C",
+      "T",
+      "C",
+      "C",
+      "A",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+      "-",
+    ],
+  ]
 
-  const sequence = consensusSequence(sequences);
-  const expectedEnergy = energyOf(sequences);
+  const expectedEnergy = energyOf(sequences)
 
-  expect(expectedEnergy).toBe(41);
-});
+  expect(expectedEnergy).toBe(41)
+})
