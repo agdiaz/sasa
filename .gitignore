@@ -108,4 +108,4 @@ dist
 .vscode-test
 
 # Results
-sasa-*/**/*
+output/**/*

@@ -22,7 +22,7 @@ program
   .option('-t, --temperature [temp]', 'Initial temperature of the model', DEFAULT_TEMP)
   .option('-l, --limit [number]', 'Max number of iterations', DEFAULT_ITERATIONS)
   .option('-e, --executions [number]', 'Number of executions of algorithm', 1)
-  .option('-o, --output <folder>', 'Path to output folder', `./sasa-${executionDatetime}`)
+  .option('-o, --output <folder>', 'Path to output folder', `./output/sasa-${executionDatetime}`)
   .parse(process.argv);
 
 if (program.debug) console.log(program.opts());
