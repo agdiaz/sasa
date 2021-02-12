@@ -1,57 +1,62 @@
 'use strict';
 
-const { COOLING_RATE } = require('./constants');
+const { COOLING_RATE, INNER_ITERATIONS, LOWEST_TEMP } = require('./constants');
+const { findInitialAlignment, consensusSequence, changeSequences } = require('./models/problem');
+const energyOfMatches = require('./utils/energy');
+const identity = require('./utils/clone-array');
 
-const simulatedAnnealing = ({ problem, parameters }) => {
-  const executionLogs = [];
-  const { initialTemperature, iterationsLimit} = parameters;
-  const isStillHot = (currentTemperature, currentTime) => currentTemperature > 0.1 && currentTime < iterationsLimit;
+const findBestNeighbor = (currentState, currentEnergy) => {
+  let bestNeighborState = currentState.map(identity);
+  let bestNeighborEnergy = currentEnergy;
 
-  let currentState = problem.initialState;
-  let currentEnergy = problem.initialEnergy;
-  let currentTemperature, currentTime;
+  for(let _innerIteration = 0; _innerIteration < INNER_ITERATIONS; _innerIteration++) {
+    const neighborState = changeSequences(bestNeighborState);
+    const neighborEnergy = energyOfMatches(neighborState);
 
-  for (
-    currentTemperature = initialTemperature, currentTime = 0;
-    isStillHot(currentTemperature, currentTime);
-    currentTemperature *= COOLING_RATE, currentTime++
-  ) {
-    executionLogs.push({ currentTemperature, currentTime, currentEnergy });
-
-    let newState = currentState;
-    let newEnergy = currentEnergy;
-
-    for(let i = 0; i < 50; i++) {
-      const nextState = problem.findNextState(newState);
-      const nextStateEnergy = problem.energyOf(nextState);
-      const deltaEnergy = nextStateEnergy - newEnergy;
-
-      if (deltaEnergy <= 0) {
-        newState = nextState;
-        newEnergy = nextStateEnergy;
-      }
+    if (neighborEnergy < bestNeighborEnergy) {
+      bestNeighborState = neighborState.map(identity);
+      bestNeighborEnergy = energyOfMatches(bestNeighborState);
     }
+  }
 
-    if (newEnergy - currentEnergy <= 0) {
-      currentState = newState;
-      currentEnergy = newEnergy;
+  return { bestNeighborState, bestNeighborEnergy };
+}
+
+const simulatedAnnealing = ({ sequences, parameters: { initialTemperature, iterationsLimit} }) => {
+  const isStillHot = (currentTemperature, currentIteration) => currentTemperature > LOWEST_TEMP && currentIteration < iterationsLimit;
+  
+  const initialState = findInitialAlignment(sequences);
+  const initialEnergy = energyOfMatches(initialState);
+
+  let currentState = initialState.map(identity);
+  let currentEnergy = initialEnergy;
+
+  for (let currentTemperature = initialTemperature, currentIteration = 0; isStillHot(currentTemperature, currentIteration); currentTemperature *= COOLING_RATE, currentIteration++) {
+    const { bestNeighborState, bestNeighborEnergy } = findBestNeighbor(currentState, currentEnergy);
+
+    if (bestNeighborEnergy < currentEnergy) {
+      currentState = bestNeighborState.map(identity);
+      currentEnergy = bestNeighborEnergy;
     } else {
-      const qExp = (-1.0 * (newEnergy - currentEnergy) / currentTemperature);
+      const qExp = (-1.0 * (bestNeighborEnergy - currentEnergy) / currentTemperature);
       const q = Math.pow(Math.E, qExp);
 
-      if (q > Math.random()) {
-        currentState = newState;
-        currentEnergy = newEnergy;
+      if (Math.random() < q) {
+        currentState = bestNeighborState.map(identity);
+        currentEnergy = bestNeighborEnergy;
       }
     }
-  };
+
+    if (currentEnergy <= 0) break;
+  }
 
   const solution = {
-    initialState: problem.initialState.join(''),
-    initialEnergy: problem.initialEnergy,
-    finalState: currentState.join(''),
+    initialState,
+    initialEnergy,
+    initialSequence: consensusSequence(initialState).join(''),
+    finalState: currentState,
     finalEnergy: currentEnergy,
-    executionLogs,
+    finalSequence: consensusSequence(currentState).join(''),
   };
 
   return solution;

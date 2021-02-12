@@ -2,47 +2,68 @@
 
 const _lodash = require('lodash');
 
-const changeStateGenerator = require('../utils/change-state-generator');
-const energyOfMatches = require('../utils/energy');
+const { addDeletion, removeDeletion } = require('../utils/change-state-generator');
+const identity = require('../utils/clone-array');
 
-const { DELETE_SYMBOL } = require('../constants');
+const { DELETE_SYMBOL, PROBABILITY_ADD_DELETION, PROBABILITY_REMOVE_DELETION } = require('../constants');
 
-class Problem {
-  constructor({ sequences }) {
-    this.sequences = sequences;
-    this.sequencesContentsSplitedByPosition = sequences.map(seq => seq.set[0].seq.split(''));
-    this.initialState = this.findInitialState();
-    this.initialEnergy = this.energyOf(this.initialState);
-  }
+const addPadding = (sequences) => {
+  let currentPadding = 0;
 
-  findInitialState() {
-    const sequenceLengths = this.sequencesContentsSplitedByPosition.map(seq => seq.length);
-    const maxSequenceLength = Math.max(...sequenceLengths);
-    const initialState = Array(maxSequenceLength);
+  sequences.forEach(seq => {
+    const deltaPadding = Math.floor(Math.random() * seq.length);
 
-    for (let index = 0; index < maxSequenceLength; index++) {
-      const randomSequence = _lodash.sample(this.sequencesContentsSplitedByPosition);
-      const possibleValues = (index < randomSequence.length)
-        ? [randomSequence[index], DELETE_SYMBOL]
-        : [DELETE_SYMBOL];
-
-      initialState[index] = _lodash.sample(possibleValues);
+    for(let paddingIndex = 0; paddingIndex < currentPadding; paddingIndex++) {
+      seq.unshift(DELETE_SYMBOL);
     }
 
-    return initialState;
-  };
+    currentPadding += deltaPadding;
+  });
 
-  findNextState(state) {
-    const nextState = [...state];
-    const randomIndex = Math.floor(Math.random() * state.length);
-    const changeState = changeStateGenerator();
+  return sequences;
+}
 
-    return changeState(this.sequences, nextState, randomIndex);
-  };
+const findInitialAlignment = (sequences) => addPadding(_lodash.shuffle(sequences.map(seq => seq.split(''))));
 
-  energyOf(state) {
-    return energyOfMatches(state, this.sequencesContentsSplitedByPosition);
-  };
+const consensusSequence = (sequences) => {
+  const sequenceLengths = sequences.map(seq => seq.length);
+  const maxSequenceLength = Math.max(...sequenceLengths);
+  const consensus = [];
+  
+  for (let index = 0; index < maxSequenceLength; index++) {
+    const positionValues = _lodash.without(sequences.map(seq => seq[index]), undefined, null, DELETE_SYMBOL);
+    const mostRepeatedValue = _lodash.head(_lodash(positionValues).countBy().entries().maxBy(_lodash.last));
+    
+    if (mostRepeatedValue !== undefined) {
+      consensus.push(mostRepeatedValue);
+    } else {
+      consensus.push(DELETE_SYMBOL);
+    }
+  }
+
+  return consensus;
+}
+
+const changeSequences = (sequences) => {
+  const changedSequences = sequences.map(identity);
+  
+  changedSequences.forEach((state) => {
+    const random = Math.random();
+
+    if (random < PROBABILITY_ADD_DELETION) {
+      return addDeletion(state)
+    } else if (random < PROBABILITY_REMOVE_DELETION) {
+      return removeDeletion(state)
+    } else {
+      return state;
+    }
+  })
+
+  return changedSequences;
 };
 
-module.exports = Problem;
+module.exports = {
+  findInitialAlignment,
+  consensusSequence,
+  changeSequences,
+};

@@ -1,23 +1,22 @@
 'use strict';
 
-const _lodash = require('lodash');
+const { countBy } = require('lodash');
+const { DELETE_SYMBOL } = require('../constants');
 
-const energyOf = (alignment, sequences) => {
-  const countOfSequences = sequences.length;
-  const maxSequenceLength = Math.max(alignment.length, ...sequences.map(s => s.length));
+const energyOf = (sequences) => {
+  const maxSequenceLength = Math.max(...sequences.map(s => s.length));
+  let totalEnergy = 0;
 
-  const positionEnergies = _lodash.range(0, maxSequenceLength).map(position => {
-    if (position >= alignment.length) {
-      return 1;
-    }
+  for (let positionIndex = 0; positionIndex < maxSequenceLength; positionIndex++) {
+    const positionValues = sequences.map(seq => seq[positionIndex]);
+    const deletionCount = positionValues.filter(v => v === DELETE_SYMBOL).length
 
-    const alignmentValue = alignment[position];
-    const valuesAtSamePosition = sequences.map(seq => seq[position]);
+    const groups = Object.keys(countBy(positionValues)).length;
 
-    return valuesAtSamePosition.filter(v => (v !== alignmentValue)).length / countOfSequences;
-  });
+    totalEnergy += (groups - 1) + ((deletionCount / positionValues.length) * (maxSequenceLength - positionIndex));
+  }
 
-  return _lodash.sum(positionEnergies);
-};
+  return totalEnergy;
+}
 
 module.exports = energyOf;
