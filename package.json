@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "eslint --ignore-path .gitignore .",
     "lint:fix": "eslint --ignore-path .gitignore . --fix",
-    "test": "jest",
+    "test": "jest --passWithNoTest",
     "test:debug": "node --inspect node_modules/.bin/jest --runInBand",
     "start": "node index.js $*"
   },
