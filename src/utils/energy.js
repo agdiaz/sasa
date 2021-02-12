@@ -1,6 +1,6 @@
 'use strict';
 
-const _lodash = require('lodash');
+const { countBy } = require('lodash');
 const { DELETE_SYMBOL } = require('../constants');
 
 const energyOf = (sequences) => {
@@ -11,9 +11,9 @@ const energyOf = (sequences) => {
     const positionValues = sequences.map(seq => seq[positionIndex]);
     const deletionCount = positionValues.filter(v => v === DELETE_SYMBOL).length
 
-    const groups = Object.keys(_lodash.countBy(positionValues)).length;
+    const groups = Object.keys(countBy(positionValues)).length;
 
-    totalEnergy += (groups - 1) + deletionCount;
+    totalEnergy += (groups - 1) + ((deletionCount / positionValues.length) * (maxSequenceLength - positionIndex));
   }
 
   return totalEnergy;

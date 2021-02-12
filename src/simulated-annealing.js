@@ -47,7 +47,7 @@ const simulatedAnnealing = ({ sequences, parameters: { initialTemperature, itera
       }
     }
 
-    if (currentEnergy === 0) break;
+    if (currentEnergy <= 0) break;
   }
 
   const solution = {
