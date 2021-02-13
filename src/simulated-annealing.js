@@ -30,10 +30,17 @@ const findBestNeighbor = (currentState, currentEnergy) => {
   return { bestNeighborState, bestNeighborEnergy }
 }
 
-const simulatedAnnealing = ({
-  sequences,
-  parameters: { initialTemperature, iterationsLimit },
-}) => {
+const simulatedAnnealingAsync = ({sequences, initialTemperature, iterationsLimit }) => new Promise((resolve, reject) => {
+  try {
+    const result = simulatedAnnealing({sequences, initialTemperature, iterationsLimit})
+    resolve(result)
+  } catch(err) {
+    reject(err.message)
+  }
+})
+
+
+const simulatedAnnealing = ({ sequences, initialTemperature,  iterationsLimit }) => {
   const isStillHot = (currentTemperature, currentIteration) =>
     currentTemperature > LOWEST_TEMP && currentIteration < iterationsLimit
 
@@ -82,4 +89,4 @@ const simulatedAnnealing = ({
   return solution
 }
 
-module.exports = simulatedAnnealing
+module.exports = { simulatedAnnealing, simulatedAnnealingAsync }

@@ -1,9 +1,10 @@
 "use strict"
 
-const _lodash = require("lodash")
+const { range } = require("lodash")
+const async = require('async');
 
 const { mapPathsToSequences } = require("../utils/fasta-reader")
-const simulatedAnnealing = require("../simulated-annealing")
+const { simulatedAnnealing, simulatedAnnealingAsync } = require("../simulated-annealing")
 const formatSequences = require("../utils/format-sequences")
 
 class Resolver {
@@ -13,29 +14,25 @@ class Resolver {
       seq.set[0].seq.toString()
     )
     this.simulatedAnnealingArgs = {
-      parameters: {
-        initialTemperature: parameters.initialTemperature,
-        iterationsLimit: parameters.iterationsLimit,
-        isDebugging: options.isDebugging,
-      },
+      sequences: this.sequencesStrings,
+      initialTemperature: parameters.initialTemperature,
+      iterationsLimit: parameters.iterationsLimit,
+      isDebugging: options.isDebugging,
     }
   }
 
-  runSimulatedAnnealing(times) {
-    const executionResults = _lodash.range(0, times).map((time) => {
-      const solution = simulatedAnnealing({
-        sequences: this.sequencesStrings,
-        ...this.simulatedAnnealingArgs,
-      })
-
-      return {
-        ...solution,
-        initialState: formatSequences(solution.initialState),
-        finalState: formatSequences(solution.finalState),
-      }
+  async runSimulatedAnnealing(times) {
+    const executionResultsPromises = range(0, times).map((time) => {
+      return simulatedAnnealingAsync(this.simulatedAnnealingArgs)
     })
 
-    return executionResults
+    const results = await Promise.all(executionResultsPromises)
+
+    return results.map(solution =>({
+      ...solution,
+      initialState: formatSequences(solution.initialState),
+      finalState: formatSequences(solution.finalState),
+    }))
   }
 }
 

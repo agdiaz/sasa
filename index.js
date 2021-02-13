@@ -50,10 +50,10 @@ const resolver = new Resolver({
   },
 })
 
-const results = resolver.runSimulatedAnnealing(parseInt(program.executions, 10))
-
-writeResults({
-  results,
-  outputFolder: program.output,
-  sequences: resolver.sequences,
+resolver.runSimulatedAnnealing(parseInt(program.executions, 10)).then((results) => {
+  writeResults({
+    results,
+    outputFolder: program.output,
+    sequences: resolver.sequences,
+  })
 })
