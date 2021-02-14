@@ -1,11 +1,11 @@
-"use strict"
+'use strict'
 
-const times = require("lodash/times")
+const times = require('lodash/times')
 
 const {
   formatSequences,
   consensusSequence,
-} = require("./utils/format-sequences")
+} = require('./utils/format-sequences')
 
 const resolveProblemWith = ({
   problem,

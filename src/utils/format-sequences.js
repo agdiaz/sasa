@@ -1,6 +1,6 @@
-const _lodash = require("lodash")
+const _lodash = require('lodash')
 
-const { DELETE_SYMBOL } = require("../constants")
+const { DELETE_SYMBOL } = require('../constants')
 
 const consensusSequence = (sequences) => {
   const sequenceLengths = sequences.map((seq) => seq.length)
@@ -25,7 +25,7 @@ const consensusSequence = (sequences) => {
     }
   }
 
-  return consensus.join("")
+  return consensus.join('')
 }
 
 const formatSequence = (sequence, maxSequenceLength) => {

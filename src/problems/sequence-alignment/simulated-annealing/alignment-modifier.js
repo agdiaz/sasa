@@ -1,9 +1,9 @@
-"use strict"
+'use strict'
 
 const {
   DELETE_SYMBOL,
   PROBABILITY_POSITION_BEGIN,
-} = require("../../../constants")
+} = require('../../../constants')
 
 const addDeletion = (sequence) => {
   let position

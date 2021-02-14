@@ -1,27 +1,27 @@
-"use strict"
+'use strict'
 
-const fs = require("fs")
-const { orderBy, pick } = require("lodash")
-const { parse } = require("json2csv")
+const fs = require('fs')
+const { orderBy, pick } = require('lodash')
+const { parse } = require('json2csv')
 
-const resultsFormatter = require("./results-formatter")
+const resultsFormatter = require('./results-formatter')
 
 const writeResults = ({ results, outputFolder }) => {
   if (!fs.existsSync(outputFolder)) {
-    console.log("Creating output folder", outputFolder)
+    console.log('Creating output folder', outputFolder)
     fs.mkdirSync(outputFolder, { recursive: true })
   }
 
-  const sortedResults = orderBy(results, (result) => result.finalEnergy, "asc")
+  const sortedResults = orderBy(results, (result) => result.finalEnergy, 'asc')
 
   const resultsSortedByLowestEnergy = sortedResults.map((result, execution) => {
     return {
       execution,
       ...pick(result, [
-        "initialEnergy",
-        "finalEnergy",
-        "initialSequence",
-        "finalSequence",
+        'initialEnergy',
+        'finalEnergy',
+        'initialSequence',
+        'finalSequence',
       ]),
     }
   })

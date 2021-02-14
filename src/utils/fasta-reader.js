@@ -1,7 +1,7 @@
-"use strict"
+'use strict'
 
-const fs = require("fs")
-const { FastaUtils } = require("bioseq-ts")
+const fs = require('fs')
+const { FastaUtils } = require('bioseq-ts')
 
 const mapPathsToSequences = (filePaths) => {
   const fastaSequences = []

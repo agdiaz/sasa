@@ -1,18 +1,18 @@
 const {
   PROBABILITY_REMOVE_DELETION,
   PROBABILITY_ADD_DELETION,
-} = require("../../constants")
+} = require('../../constants')
 const {
   energyByGroupingAndDeletions,
-} = require("./simulated-annealing/alignment-energy")
+} = require('./simulated-annealing/alignment-energy')
 const {
   addDeletion,
   removeDeletion,
-} = require("./simulated-annealing/alignment-modifier")
-const { initAlignment } = require("./simulated-annealing/alignment-initializer")
+} = require('./simulated-annealing/alignment-modifier')
+const { initAlignment } = require('./simulated-annealing/alignment-initializer')
 
-const { mapPathsToSequences } = require("../../utils/fasta-reader")
-const { clone } = require("../../utils/clone")
+const { mapPathsToSequences } = require('../../utils/fasta-reader')
+const { clone } = require('../../utils/clone')
 
 const sequenceAlignment = (sequencesFiles) => {
   const sequenceFastas = mapPathsToSequences(sequencesFiles)
@@ -56,7 +56,7 @@ const buildSequencesDictionary = (sequenceFastas) => {
   return sequenceFastas.map((fasta) => ({
     header: fasta.set[0].header,
     originalSequence: fasta.set[0].seq,
-    sequenceValues: fasta.set[0].seq.split(""),
+    sequenceValues: fasta.set[0].seq.split(''),
   }))
 }
 

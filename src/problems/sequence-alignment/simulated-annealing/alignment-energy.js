@@ -1,7 +1,7 @@
-"use strict"
+'use strict'
 
-const { countBy } = require("lodash")
-const { DELETE_SYMBOL } = require("../../../constants")
+const { countBy } = require('lodash')
+const { DELETE_SYMBOL } = require('../../../constants')
 
 const energyByGroupingAndDeletions = (sequences) => {
   const maxSequenceLength = Math.max(...sequences.map((s) => s.length))

@@ -1,6 +1,6 @@
-const shuffle = require("lodash/shuffle")
+const shuffle = require('lodash/shuffle')
 
-const { DELETE_SYMBOL } = require("../../../constants")
+const { DELETE_SYMBOL } = require('../../../constants')
 
 const initAlignment = (sequences) => {
   const shuffledSequences = shuffle(sequences)

@@ -1,8 +1,8 @@
-"use strict"
+'use strict'
 
-const { findBestNeighbor } = require("./enhancers/find-best-neighbor")
-const { clone } = require("../../utils/clone")
-const { shouldTakeBestNeighbor, shouldIterate } = require("./utils")
+const { findBestNeighbor } = require('./enhancers/find-best-neighbor')
+const { clone } = require('../../utils/clone')
+const { shouldTakeBestNeighbor, shouldIterate } = require('./utils')
 
 const simulatedAnnealing = ({
   problem,
