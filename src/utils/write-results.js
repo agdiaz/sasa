@@ -14,10 +14,10 @@ const writeResults = ({ results, outputFolder }) => {
 
   const sortedResults = orderBy(results, (result) => result.finalEnergy, "asc")
 
-  const resultsSortedByLowestEnergy = sortedResults.map((r, execution) => {
+  const resultsSortedByLowestEnergy = sortedResults.map((result, execution) => {
     return {
       execution,
-      ...pick(r, [
+      ...pick(result, [
         "initialEnergy",
         "finalEnergy",
         "initialSequence",

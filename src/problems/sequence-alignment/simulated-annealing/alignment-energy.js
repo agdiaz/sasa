@@ -1,9 +1,9 @@
 "use strict"
 
 const { countBy } = require("lodash")
-const { DELETE_SYMBOL } = require("../constants")
+const { DELETE_SYMBOL } = require("../../../constants")
 
-const energyOf = (sequences) => {
+const energyByGroupingAndDeletions = (sequences) => {
   const maxSequenceLength = Math.max(...sequences.map((s) => s.length))
   let totalEnergy = 0
 
@@ -28,4 +28,4 @@ const energyOf = (sequences) => {
   return totalEnergy
 }
 
-module.exports = energyOf
+module.exports = { energyByGroupingAndDeletions }
