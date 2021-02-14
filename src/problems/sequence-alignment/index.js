@@ -12,38 +12,34 @@ const {
 const { initAlignment } = require('./simulated-annealing/alignment-initializer')
 
 const { mapPathsToSequences } = require('../../utils/fasta-reader')
-const { clone } = require('../../utils/clone')
+const cloneDeep = require('lodash/cloneDeep')
 
 const sequenceAlignment = (sequencesFiles) => {
   const sequenceFastas = mapPathsToSequences(sequencesFiles)
   const sequencesDictionary = buildSequencesDictionary(sequenceFastas)
-  const sequences = Object.values(sequencesDictionary).map(
-    ({ sequenceValues }) => sequenceValues
-  )
 
-  const createInitialAlignment = () => initAlignment(sequences)
+  const createInitialAlignment = () => initAlignment(sequencesDictionary)
 
-  const createNeighborAlignment = (currentSequences) => {
-    const changedSequences = clone(currentSequences)
+  const createNeighborAlignment = (currentSequencesDictionary) => {
+    const changedSequences = cloneDeep(currentSequencesDictionary)
 
-    changedSequences.forEach((state) => {
+    Object.values(changedSequences).forEach((sequence) => {
       const random = Math.random()
 
       if (random < PROBABILITY_ADD_DELETION) {
-        return addDeletion(state)
+        return addDeletion(sequence)
       } else if (random < PROBABILITY_REMOVE_DELETION) {
-        return removeDeletion(state)
+        return removeDeletion(sequence)
       } else {
-        return state
+        return sequence
       }
     })
 
     return changedSequences
   }
 
-  const measureAlignmentEnergy = (currentSequences) => {
-    return energyByGroupingAndDeletions(currentSequences)
-  }
+  const measureAlignmentEnergy = (currentSequencesDictionary) =>
+    energyByGroupingAndDeletions(currentSequencesDictionary)
 
   return {
     createInitialState: createInitialAlignment,
@@ -53,11 +49,15 @@ const sequenceAlignment = (sequencesFiles) => {
 }
 
 const buildSequencesDictionary = (sequenceFastas) => {
-  return sequenceFastas.map((fasta) => ({
-    header: fasta.set[0].header,
-    originalSequence: fasta.set[0].seq,
-    sequenceValues: fasta.set[0].seq.split(''),
-  }))
+  return sequenceFastas.reduce((dictionary, fasta) => {
+    dictionary[fasta.set[0].header] = {
+      header: fasta.set[0].header,
+      originalSequence: fasta.set[0].seq,
+      sequenceValues: fasta.set[0].seq.split(''),
+    }
+
+    return dictionary
+  }, {})
 }
 
 module.exports = { sequenceAlignment }

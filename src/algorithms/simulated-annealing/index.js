@@ -1,7 +1,7 @@
 'use strict'
 
 const { findBestNeighbor } = require('./enhancers/find-best-neighbor')
-const { clone } = require('../../utils/clone')
+const cloneDeep = require('lodash/cloneDeep')
 const { shouldTakeBestNeighbor, shouldIterate } = require('./utils')
 
 const simulatedAnnealing = ({
@@ -18,7 +18,7 @@ const simulatedAnnealing = ({
   const initialState = createInitialState()
   const initialEnergy = measureStateEnergy(initialState)
 
-  let currentState = clone(initialState)
+  let currentState = cloneDeep(initialState)
   let currentEnergy = initialEnergy
 
   for (
@@ -45,7 +45,7 @@ const simulatedAnnealing = ({
       currentTemperature
     )
     if (takeBestNeighbor) {
-      currentState = clone(bestNeighborState)
+      currentState = cloneDeep(bestNeighborState)
       currentEnergy = bestNeighborEnergy
     }
   }

@@ -2,7 +2,11 @@ const _lodash = require('lodash')
 
 const { DELETE_SYMBOL } = require('../constants')
 
-const consensusSequence = (sequences) => {
+const consensusSequence = (sequencesDictionary) => {
+  const sequences = Object.values(sequencesDictionary).map(
+    ({ sequenceValues }) => sequenceValues
+  )
+
   const sequenceLengths = sequences.map((seq) => seq.length)
   const maxSequenceLength = Math.max(...sequenceLengths)
   const consensus = []
@@ -38,12 +42,15 @@ const formatSequence = (sequence, maxSequenceLength) => {
   return sequence
 }
 
-const formatSequences = (sequences) => {
+const formatSequences = (sequencesDictionary) => {
+  const sequences = Object.values(sequencesDictionary).map(
+    ({ sequenceValues }) => sequenceValues
+  )
   const maxSequenceLength = Math.max(...sequences.map((seq) => seq.length))
 
-  return sequences.map((sequence) =>
-    formatSequence(sequence, maxSequenceLength)
-  )
+  sequences.map((sequence) => formatSequence(sequence, maxSequenceLength))
+
+  return sequencesDictionary
 }
 
 module.exports = { formatSequences, consensusSequence }

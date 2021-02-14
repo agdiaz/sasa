@@ -1,4 +1,4 @@
-const { clone } = require('../../../utils/clone')
+const cloneDeep = require('lodash/cloneDeep')
 
 const findBestNeighbor = ({
   problem,
@@ -8,7 +8,7 @@ const findBestNeighbor = ({
 }) => {
   const { createNeighborState, measureStateEnergy } = problem
 
-  let bestNeighborState = clone(currentState)
+  let bestNeighborState = cloneDeep(currentState)
   let bestNeighborEnergy = currentEnergy
 
   for (let iteration = 0; iteration < neighborIterations; iteration++) {
@@ -16,7 +16,7 @@ const findBestNeighbor = ({
     const neighborEnergy = measureStateEnergy(neighborState)
 
     if (neighborEnergy < bestNeighborEnergy) {
-      bestNeighborState = clone(neighborState)
+      bestNeighborState = cloneDeep(neighborState)
       bestNeighborEnergy = neighborEnergy
     }
   }

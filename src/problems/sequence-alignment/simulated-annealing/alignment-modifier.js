@@ -10,10 +10,10 @@ const addDeletion = (sequence) => {
   if (Math.random() < PROBABILITY_POSITION_BEGIN) {
     position = 0
   } else {
-    position = sequence.length
+    position = sequence.sequenceValues.length
   }
 
-  sequence.splice(position, 0, DELETE_SYMBOL)
+  sequence.sequenceValues.splice(position, 0, DELETE_SYMBOL)
 
   return sequence
 }
@@ -21,13 +21,13 @@ const addDeletion = (sequence) => {
 const removeDeletion = (sequence) => {
   let position
   if (Math.random() < PROBABILITY_POSITION_BEGIN) {
-    position = sequence.indexOf(DELETE_SYMBOL)
+    position = sequence.sequenceValues.indexOf(DELETE_SYMBOL)
   } else {
-    position = sequence.lastIndexOf(DELETE_SYMBOL)
+    position = sequence.sequenceValues.lastIndexOf(DELETE_SYMBOL)
   }
 
   if (position >= 0) {
-    sequence.splice(position, 1)
+    sequence.sequenceValues.splice(position, 1)
   }
 
   return sequence

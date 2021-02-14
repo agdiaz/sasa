@@ -3,7 +3,10 @@
 const { countBy } = require('lodash')
 const { DELETE_SYMBOL } = require('../../../constants')
 
-const energyByGroupingAndDeletions = (sequences) => {
+const energyByGroupingAndDeletions = (sequencesDictionary) => {
+  const sequences = Object.values(sequencesDictionary).map(
+    ({ sequenceValues }) => sequenceValues
+  )
   const maxSequenceLength = Math.max(...sequences.map((s) => s.length))
   let totalEnergy = 0
 
