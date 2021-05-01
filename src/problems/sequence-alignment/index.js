@@ -39,7 +39,7 @@ const sequenceAlignment = (sequencesFiles) => {
   }
 
   const measureAlignmentEnergy = (currentSequencesDictionary) =>
-    energyByGroupingAndDeletions(currentSequencesDictionary)
+    energyByGroupingAndDeletions(sequencesDictionary, currentSequencesDictionary)
 
   return {
     createInitialState: createInitialAlignment,
