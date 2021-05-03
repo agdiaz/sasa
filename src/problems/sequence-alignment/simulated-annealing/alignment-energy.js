@@ -4,7 +4,7 @@ const { countBy, sum } = require('lodash')
 const { DELETE_SYMBOL } = require('../../../constants')
 
 const quadraticEnergy = (center, position, deletionProportion) => {
-  return deletionProportion * Math.pow((position - center), 2) 
+  return deletionProportion / Math.pow((position - center), 2) 
 }
 
 const energyByGroupingAndDeletions = (initialSequencesDictionary, sequencesDictionary) => {
@@ -34,8 +34,7 @@ const energyByGroupingAndDeletions = (initialSequencesDictionary, sequencesDicti
 
     const groups = Object.keys(countBy(positionValues)).length
     const q = quadraticEnergy(center, positionIndex, deletionCount / positionValues.length)
-
-    totalEnergy += groups + (groups === positionValues.length ? 50 : 0)
+    totalEnergy += groups + q + (groups === positionValues.length ? 50 : 0)
   }
 
   return totalEnergy + Math.abs(maxTheoreticalLength - maxSequenceLength)

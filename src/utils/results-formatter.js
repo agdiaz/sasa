@@ -17,9 +17,10 @@ module.exports = ({ executionResult }) => {
 
   const maxHeaderLength = 20 // Math.min(Object.keys(sequencesDictionary).map(k => k.length), 20)
 
-  console.log('FIRST ENERGY', executionResult.initialEnergy.toFixed(5))
+  console.log('INITIAL ENERGY', executionResult.initialEnergy.toFixed(5))
   console.log('FINAL ENERGY  ', executionResult.finalEnergy.toFixed(5))
-
+  
+  console.log('SEQUENCES ALIGNMENT ')
   iterations.forEach((it) => {
     console.log('FROM-TO:', it * 50, (it + 1) * 50 - 1)
     if (it % 2 === 0) {
@@ -40,7 +41,7 @@ module.exports = ({ executionResult }) => {
       alignmentLogSeq = chunkedAlignedSequence[it].join('').toString()
     }
 
-    console.log('\x1b[32mCONSE               ', alignmentLogSeq, '\x1b[0m')
+    console.log('\x1b[32mCONSENSUS           ', alignmentLogSeq, '\x1b[0m')
 
     chunkedSequences.forEach((seq, index) => {
       const sequenceHeader = Object.keys(sequencesDictionary)[index]

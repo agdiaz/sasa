@@ -1,5 +1,5 @@
 'use strict'
-console.log('Welcome to SASA (Simulated Annealing Sequence Alignment Tool')
+console.log('Welcome to SASA (Simulated Annealing Sequence Alignment Tool)')
 
 const moment = require('moment')
 const program = require('commander')
