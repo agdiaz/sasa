@@ -29,9 +29,19 @@ const writeResults = ({ results, outputFolder }) => {
   const resultsFilename = `${outputFolder}/results.csv`
   fs.writeFileSync(resultsFilename, parse(resultsSortedByLowestEnergy))
 
+  const msaFilename = `${outputFolder}/msa.fasta`
   const bestResult = sortedResults[0]
 
+  const outputFasta = Object.entries(bestResult.finalState)
+    .map(([file, value]) => `>${file}\n ${value.sequenceValues.join('')}`)
+    .join('\n')
+
+  fs.writeFileSync(msaFilename, outputFasta)
+
   resultsFormatter({ executionResult: bestResult })
+
+  console.log('MSA result')
+  console.log(outputFasta)
 }
 
 module.exports = writeResults
