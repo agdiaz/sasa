@@ -1,37 +1,41 @@
 'use strict'
 
 const {
-  DELETE_SYMBOL,
+  GAP_SYMBOL,
   PROBABILITY_POSITION_HEAD,
   PROBABILITY_POSITION_TRAIL,
 } = require('../../../constants')
 
 const addDeletion = (sequence) => {
-  let position
+  let gapIndex
   const random = Math.random()
   if (random < PROBABILITY_POSITION_HEAD) {
-    position = 0
+    gapIndex = 0
   } else if (random < PROBABILITY_POSITION_TRAIL) {
-    position = sequence.sequenceValues.length
+    gapIndex = sequence.sequenceValues.length - 1
   } else {
-    position = Math.floor(Math.random() * sequence.sequenceValues.length)
+    gapIndex = Math.floor(Math.random() * sequence.sequenceValues.length)
   }
 
-  sequence.sequenceValues.splice(position, 0, DELETE_SYMBOL)
+  // console.debug('PRE addDeletion', gapIndex, sequence.sequenceValues)
+  sequence.sequenceValues.splice(gapIndex, 0, GAP_SYMBOL)
+  // console.debug('POST addDeletion', gapIndex, sequence.sequenceValues)
 
   return sequence
 }
 
 const removeDeletion = (sequence) => {
-  let position
+  let gapIndex
   if (Math.random() < PROBABILITY_POSITION_HEAD) {
-    position = sequence.sequenceValues.indexOf(DELETE_SYMBOL)
+    gapIndex = sequence.sequenceValues.indexOf(GAP_SYMBOL)
   } else {
-    position = sequence.sequenceValues.lastIndexOf(DELETE_SYMBOL)
+    gapIndex = sequence.sequenceValues.lastIndexOf(GAP_SYMBOL)
   }
 
-  if (position >= 0) {
-    sequence.sequenceValues.splice(position, 1)
+  if (gapIndex >= 0) {
+    // console.debug('PRE removeDeletion', gapIndex, sequence.sequenceValues)
+    sequence.sequenceValues.splice(gapIndex, 1)
+    // console.debug('POST removeDeletion', gapIndex, sequence.sequenceValues)
   }
 
   return sequence

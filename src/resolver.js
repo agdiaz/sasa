@@ -13,9 +13,21 @@ const resolveProblemWith = ({
   parameters,
   executionTimes,
 }) => {
-  const executionResults = times(executionTimes, () => {
+  const executionResults = times(executionTimes, (executionTime) => {
+    if (parameters.isDebugging) {
+      console.debug(`[Execution #${executionTime + 1}] Resolving problem`)
+    }
+
     const problemToResolve = problem(parameters.files)
     const solution = algorithm({ problem: problemToResolve, parameters })
+
+    if (parameters.isDebugging) {
+      console.debug(
+        `[Execution #${executionTime + 1}] Solution found: ${
+          solution.finalEnergy
+        }`
+      )
+    }
 
     return {
       ...solution,

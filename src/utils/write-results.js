@@ -1,7 +1,7 @@
 'use strict'
 
 const fs = require('fs')
-const { orderBy, pick } = require('lodash')
+const { orderBy, pick, groupBy } = require('lodash')
 const { parse } = require('json2csv')
 
 const resultsFormatter = require('./results-formatter')
@@ -29,19 +29,27 @@ const writeResults = ({ results, outputFolder }) => {
   const resultsFilename = `${outputFolder}/results.csv`
   fs.writeFileSync(resultsFilename, parse(resultsSortedByLowestEnergy))
 
+  const finalEnergies = groupBy(resultsSortedByLowestEnergy, 'finalEnergy')
+  console.log(
+    `Unique results: ${Object.keys(finalEnergies).length} out of ${
+      resultsSortedByLowestEnergy.length
+    } potential ones`
+  )
+  console.log('Final energies: ', Object.keys(finalEnergies))
+
   const msaFilename = `${outputFolder}/msa.fasta`
   const bestResult = sortedResults[0]
 
-  const outputFasta = Object.entries(bestResult.finalState)
-    .map(([file, value]) => `>${file}\n ${value.sequenceValues.join('')}`)
+  const outputMSA = Object.entries(bestResult.finalState)
+    .map(([entry, value]) => `>${entry}\n ${value.sequenceValues.join('')}`)
     .join('\n')
 
-  fs.writeFileSync(msaFilename, outputFasta)
+  fs.writeFileSync(msaFilename, outputMSA)
 
   resultsFormatter({ executionResult: bestResult })
 
-  console.log('MSA result')
-  console.log(outputFasta)
+  console.log('Best MSA result:')
+  console.log(outputMSA)
 }
 
 module.exports = writeResults

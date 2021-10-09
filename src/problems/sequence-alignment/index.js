@@ -4,6 +4,7 @@ const {
 } = require('../../constants')
 const {
   energyByGroupingAndDeletions,
+  multipleAlignmentQuality,
 } = require('./simulated-annealing/alignment-energy')
 const {
   addDeletion,
@@ -21,25 +22,25 @@ const sequenceAlignment = (sequencesFiles) => {
   const createInitialAlignment = () => initAlignment(sequencesDictionary)
 
   const createNeighborAlignment = (currentSequencesDictionary) => {
-    const changedSequences = cloneDeep(currentSequencesDictionary)
+    const neighborSequences = cloneDeep(currentSequencesDictionary)
+    const randomIndex = Math.floor(
+      Math.random() * Object.keys(currentSequencesDictionary).length
+    )
+    const randomKey = Object.keys(currentSequencesDictionary)[randomIndex]
+    const randomSequence = neighborSequences[randomKey]
 
-    Object.values(changedSequences).forEach((sequence) => {
-      const random = Math.random()
+    const random = Math.random()
+    if (random < PROBABILITY_ADD_DELETION) {
+      addDeletion(randomSequence)
+    } else if (random < PROBABILITY_REMOVE_DELETION) {
+      removeDeletion(randomSequence)
+    }
 
-      if (random < PROBABILITY_ADD_DELETION) {
-        return addDeletion(sequence)
-      } else if (random < PROBABILITY_REMOVE_DELETION) {
-        return removeDeletion(sequence)
-      } else {
-        return sequence
-      }
-    })
-
-    return changedSequences
+    return neighborSequences
   }
 
   const measureAlignmentEnergy = (currentSequencesDictionary) =>
-    energyByGroupingAndDeletions(sequencesDictionary, currentSequencesDictionary)
+    multipleAlignmentQuality(sequencesDictionary, currentSequencesDictionary)
 
   return {
     createInitialState: createInitialAlignment,
@@ -51,7 +52,6 @@ const sequenceAlignment = (sequencesFiles) => {
 const buildSequencesDictionary = (sequenceFastas) => {
   return sequenceFastas.reduce((dictionary, fasta) => {
     dictionary[fasta.set[0].header] = {
-      header: fasta.set[0].header,
       originalSequence: fasta.set[0].seq,
       sequenceValues: fasta.set[0].seq.split(''),
     }

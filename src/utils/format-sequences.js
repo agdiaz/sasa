@@ -1,6 +1,6 @@
 const _lodash = require('lodash')
 
-const { DELETE_SYMBOL } = require('../constants')
+const { GAP_SYMBOL } = require('../constants')
 
 const consensusSequence = (sequencesDictionary) => {
   const sequences = Object.values(sequencesDictionary).map(
@@ -16,7 +16,7 @@ const consensusSequence = (sequencesDictionary) => {
       sequences.map((seq) => seq[index]),
       undefined,
       null,
-      DELETE_SYMBOL
+      GAP_SYMBOL
     )
     const mostRepeatedValue = _lodash.head(
       _lodash(positionValues).countBy().entries().maxBy(_lodash.last)
@@ -25,7 +25,7 @@ const consensusSequence = (sequencesDictionary) => {
     if (mostRepeatedValue !== undefined) {
       consensus.push(mostRepeatedValue)
     } else {
-      consensus.push(DELETE_SYMBOL)
+      consensus.push(GAP_SYMBOL)
     }
   }
 
@@ -36,7 +36,7 @@ const formatSequence = (sequence, maxSequenceLength) => {
   const trailingLength = maxSequenceLength - sequence.length
 
   for (let trailingIndex = 0; trailingIndex < trailingLength; trailingIndex++) {
-    sequence.push(DELETE_SYMBOL)
+    sequence.push(GAP_SYMBOL)
   }
 
   return sequence

@@ -3,9 +3,9 @@ const probabilityOfChoosingBadNeighbor = (
   currentEnergy,
   currentTemperature
 ) => {
-  const qExp = (currentEnergy - bestNeighborEnergy) / currentTemperature
+  const exponent = (currentEnergy - bestNeighborEnergy) / currentTemperature
 
-  return Math.pow(Math.E, qExp)
+  return Math.pow(Math.E, exponent)
 }
 
 const shouldTakeBestNeighbor = (

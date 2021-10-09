@@ -12,6 +12,7 @@ const simulatedAnnealing = ({
     neighborIterations,
     coolingRate,
     lowestTemp,
+    isDebugging,
   },
 }) => {
   const { createInitialState, measureStateEnergy } = problem
@@ -37,16 +38,19 @@ const simulatedAnnealing = ({
       problem,
       currentState,
       currentEnergy,
+      currentTemperature,
     })
 
-    const takeBestNeighbor = shouldTakeBestNeighbor(
-      bestNeighborEnergy,
-      currentEnergy,
-      currentTemperature
-    )
-    if (takeBestNeighbor) {
-      currentState = cloneDeep(bestNeighborState)
-      currentEnergy = bestNeighborEnergy
+    currentState = cloneDeep(bestNeighborState)
+    currentEnergy = bestNeighborEnergy
+
+    if (isDebugging) {
+      console.debug({
+        currentIteration,
+        currentTemperature,
+        initialEnergy,
+        currentEnergy,
+      })
     }
   }
 
