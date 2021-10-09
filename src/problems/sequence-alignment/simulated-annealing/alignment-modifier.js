@@ -17,9 +17,7 @@ const addDeletion = (sequence) => {
     gapIndex = Math.floor(Math.random() * sequence.sequenceValues.length)
   }
 
-  // console.debug('PRE addDeletion', gapIndex, sequence.sequenceValues)
   sequence.sequenceValues.splice(gapIndex, 0, GAP_SYMBOL)
-  // console.debug('POST addDeletion', gapIndex, sequence.sequenceValues)
 
   return sequence
 }
@@ -33,9 +31,7 @@ const removeDeletion = (sequence) => {
   }
 
   if (gapIndex >= 0) {
-    // console.debug('PRE removeDeletion', gapIndex, sequence.sequenceValues)
     sequence.sequenceValues.splice(gapIndex, 1)
-    // console.debug('POST removeDeletion', gapIndex, sequence.sequenceValues)
   }
 
   return sequence

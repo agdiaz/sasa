@@ -25,8 +25,9 @@
     "lodash": ">=4.17.19",
     "minimist": ">=0.2.1",
     "moment": "^2.24.0",
-    "nodeplotlib": "^0.6.5",
     "node-notifier": ">=8.0.1",
+    "nodeplotlib": "^0.6.5",
+    "piscina": "^3.1.0",
     "yargs-parser": ">=18.1.2"
   },
   "devDependencies": {
@@ -36,7 +37,7 @@
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.3.1",
-    "jest": "^26.6.3",
+    "jest": "^27.2.5",
     "prettier": "2.2.1"
   }
 }

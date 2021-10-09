@@ -3,7 +3,6 @@ const {
   PROBABILITY_ADD_DELETION,
 } = require('../../constants')
 const {
-  energyByGroupingAndDeletions,
   multipleAlignmentQuality,
 } = require('./simulated-annealing/alignment-energy')
 const {
@@ -12,11 +11,9 @@ const {
 } = require('./simulated-annealing/alignment-modifier')
 const { initAlignment } = require('./simulated-annealing/alignment-initializer')
 
-const { mapPathsToSequences } = require('../../utils/fasta-reader')
 const cloneDeep = require('lodash/cloneDeep')
 
-const sequenceAlignment = (sequencesFiles) => {
-  const sequenceFastas = mapPathsToSequences(sequencesFiles)
+const sequenceAlignment = (sequenceFastas) => {
   const sequencesDictionary = buildSequencesDictionary(sequenceFastas)
 
   const createInitialAlignment = () => initAlignment(sequencesDictionary)
@@ -29,12 +26,12 @@ const sequenceAlignment = (sequencesFiles) => {
     const randomKey = Object.keys(currentSequencesDictionary)[randomIndex]
     const randomSequence = neighborSequences[randomKey]
 
-    const random = Math.random()
-    if (random < PROBABILITY_ADD_DELETION) {
+    const modificationChance = Math.random()
+    if (modificationChance < PROBABILITY_ADD_DELETION) {
       addDeletion(randomSequence)
-    } else if (random < PROBABILITY_REMOVE_DELETION) {
+    } else if (modificationChance < PROBABILITY_REMOVE_DELETION) {
       removeDeletion(randomSequence)
-    }
+    } // else: keep the sequence as it is
 
     return neighborSequences
   }

@@ -1,7 +1,11 @@
 'use strict'
 
-const { countBy, sum, times } = require('lodash')
-const { GAP_SYMBOL, GAP_SYMBOL_PENALTY } = require('../../../constants')
+const { countBy, sum, times, remove } = require('lodash')
+const {
+  GAP_SYMBOL,
+  GAP_SYMBOL_PENALTY,
+  ALL_GAP_SYMBOL_PENALTY,
+} = require('../../../constants')
 
 const quadraticEnergy = (center, position, deletionProportion) => {
   return deletionProportion / Math.pow(position - center, 2)
@@ -68,27 +72,16 @@ const multipleAlignmentQuality = (
       (seq) => seq[columnIndex] || GAP_SYMBOL
     )
 
-    const columnGapCount = positionValues.filter((v) => v === GAP_SYMBOL).length
-    gapCost += columnGapCount
+    const columnGaps = remove(positionValues, (v) => v === GAP_SYMBOL)
 
-    const substitutions = {}
-    positionValues
-      .filter((v) => v !== GAP_SYMBOL)
-      .forEach((position) => {
-        substitutions[position] = isNaN(substitutions[position])
-          ? 1
-          : substitutions[position] + 1
-      })
-    const columnSubstitutionCost = Object.keys(substitutions).length
-    substitutionCost += GAP_SYMBOL_PENALTY * columnSubstitutionCost
+    if (positionValues.length === 0) {
+      gapCost += ALL_GAP_SYMBOL_PENALTY + GAP_SYMBOL_PENALTY * columnGaps.length
+    } else {
+      gapCost += GAP_SYMBOL_PENALTY * columnGaps.length
 
-    // console.debug({
-    //   sequences,
-    //   columnIndex,
-    //   positionValues,
-    //   columnGapCount,
-    //   columnSubstitutionCost,
-    // })
+      const substitutions = countBy(positionValues)
+      substitutionCost += Object.keys(substitutions).length - 1
+    }
   })
 
   return substitutionCost + gapCost

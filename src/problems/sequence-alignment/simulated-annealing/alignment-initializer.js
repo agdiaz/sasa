@@ -4,13 +4,11 @@ const { GAP_SYMBOL } = require('../../../constants')
 
 const initAlignment = (sequencesDictionary) => {
   const initialAlignment = cloneDeep(sequencesDictionary)
-  // console.log('PRE initAlignment', initialAlignment)
 
   Object.keys(initialAlignment).forEach((sequenceKey) => {
     addPadding(initialAlignment[sequenceKey].sequenceValues)
   })
 
-  // console.log('POST initAlignment', initialAlignment)
   return initialAlignment
 }
 

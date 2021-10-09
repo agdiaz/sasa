@@ -1,18 +1,21 @@
 'use strict'
 
 const fs = require('fs')
+const resolve = require('path')
+
 const { FastaUtils } = require('bioseq-ts')
 
 const mapPathsToSequences = (filePaths) => {
   const fastaSequences = []
 
   filePaths.forEach((filePath) => {
+    console.debug('reading', filePath)
     const fileStats = fs.lstatSync(filePath)
 
     if (fileStats.isDirectory()) {
       const folderFiles = fs
         .readdirSync(filePath)
-        .map((folderFileName) => `${filePath}/${folderFileName}`)
+        .map((folderFileName) => resolve.join(filePath, folderFileName))
 
       mapPathsToSequences(folderFiles).forEach((seq) => {
         fastaSequences.push(seq)

@@ -2,7 +2,7 @@
 
 const { findBestNeighbor } = require('./enhancers/find-best-neighbor')
 const cloneDeep = require('lodash/cloneDeep')
-const { shouldTakeBestNeighbor, shouldIterate } = require('./utils')
+const { shouldIterate } = require('./utils')
 
 const simulatedAnnealing = ({
   problem,
@@ -44,14 +44,14 @@ const simulatedAnnealing = ({
     currentState = cloneDeep(bestNeighborState)
     currentEnergy = bestNeighborEnergy
 
-    if (isDebugging) {
-      console.debug({
-        currentIteration,
-        currentTemperature,
-        initialEnergy,
-        currentEnergy,
-      })
-    }
+    // if (isDebugging) {
+    //   console.debug({
+    //     currentIteration,
+    //     currentTemperature,
+    //     initialEnergy,
+    //     currentEnergy,
+    //   })
+    // }
   }
 
   return {

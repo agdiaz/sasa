@@ -72,22 +72,20 @@ const parameters = {
   files: program.input,
   initialTemperature: program.temperature,
   iterationsLimit: program.limit,
-  executions: program.executions,
+  executions: parseInt(program.executions),
   neighborIterations: program.neighborIterations,
   coolingRate: program.coolingRate,
   lowestTemp: program.lowestTemp,
   isDebugging: program.debug,
 }
 
-const executionTimes = parseInt(program.executions)
-const results = resolveProblemWith({
-  problem: sequenceAlignment,
-  algorithm: simulatedAnnealing,
-  parameters,
-  executionTimes,
-})
-
-writeResults({
-  outputFolder: program.output,
-  results,
-})
+resolveProblemWith({ parameters })
+  .then((results) => {
+    writeResults({
+      outputFolder: program.output,
+      results,
+    })
+  })
+  .catch((err) => {
+    console.error(err)
+  })

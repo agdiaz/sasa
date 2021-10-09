@@ -1,44 +1,21 @@
 'use strict'
 
 const times = require('lodash/times')
+const Piscina = require('piscina')
+const { resolve } = require('path')
+const { mapPathsToSequences } = require('./utils/fasta-reader')
 
-const {
-  formatSequences,
-  consensusSequence,
-} = require('./utils/format-sequences')
+const resolveProblemWith = async ({ parameters }) => {
+  const sequenceFastas = mapPathsToSequences(parameters.files)
 
-const resolveProblemWith = ({
-  problem,
-  algorithm,
-  parameters,
-  executionTimes,
-}) => {
-  const executionResults = times(executionTimes, (executionTime) => {
-    if (parameters.isDebugging) {
-      console.debug(`[Execution #${executionTime + 1}] Resolving problem`)
-    }
-
-    const problemToResolve = problem(parameters.files)
-    const solution = algorithm({ problem: problemToResolve, parameters })
-
-    if (parameters.isDebugging) {
-      console.debug(
-        `[Execution #${executionTime + 1}] Solution found: ${
-          solution.finalEnergy
-        }`
-      )
-    }
-
-    return {
-      ...solution,
-      initialState: formatSequences(solution.initialState),
-      finalState: formatSequences(solution.finalState),
-      initialSequence: consensusSequence(solution.initialState),
-      finalSequence: consensusSequence(solution.finalState),
-    }
+  const piscina = new Piscina({
+    filename: resolve(__dirname, 'worker.js'),
   })
+  const workers = times(parameters.executions, (executionTime) =>
+    piscina.run({ parameters, sequenceFastas, executionTime })
+  )
 
-  return executionResults
+  return await Promise.all(workers)
 }
 
 module.exports = { resolveProblemWith }

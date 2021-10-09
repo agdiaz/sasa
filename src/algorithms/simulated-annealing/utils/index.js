@@ -1,23 +1,23 @@
 const probabilityOfChoosingBadNeighbor = (
-  bestNeighborEnergy,
+  newNeighborEnergy,
   currentEnergy,
   currentTemperature
 ) => {
-  const exponent = (currentEnergy - bestNeighborEnergy) / currentTemperature
+  const exponent = (currentEnergy - newNeighborEnergy) / currentTemperature
 
   return Math.pow(Math.E, exponent)
 }
 
 const shouldTakeBestNeighbor = (
-  bestNeighborEnergy,
+  newNeighborEnergy,
   currentEnergy,
   currentTemperature
 ) => {
   return (
-    bestNeighborEnergy < currentEnergy ||
+    newNeighborEnergy < currentEnergy ||
     Math.random() <
       probabilityOfChoosingBadNeighbor(
-        bestNeighborEnergy,
+        newNeighborEnergy,
         currentEnergy,
         currentTemperature
       )

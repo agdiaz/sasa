@@ -43,6 +43,7 @@ const writeResults = ({ results, outputFolder }) => {
   const outputMSA = Object.entries(bestResult.finalState)
     .map(([entry, value]) => `>${entry}\n ${value.sequenceValues.join('')}`)
     .join('\n')
+    .concat('\n')
 
   fs.writeFileSync(msaFilename, outputMSA)
 

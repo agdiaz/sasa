@@ -13,8 +13,14 @@ const findBestNeighbor = ({
   let currentNeighborState = cloneDeep(currentState)
   let currentNeighborEnergy = currentEnergy
 
-  for (let iteration = 0; iteration < neighborIterations; iteration++) {
-    const newNeighborState = createNeighborState(currentNeighborState)
+  for (
+    let neighborIterationIndex = 0;
+    neighborIterationIndex < neighborIterations;
+    neighborIterationIndex++
+  ) {
+    const newNeighborState = createNeighborState(
+      cloneDeep(currentNeighborState)
+    )
     const newNeighborEnergy = measureStateEnergy(newNeighborState)
 
     const takeBestNeighbor = shouldTakeBestNeighbor(
