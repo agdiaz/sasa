@@ -4,6 +4,7 @@ const {
 } = require('../../constants')
 const {
   multipleAlignmentQuality,
+  multipleAlignmentWithBlossum62Quality,
 } = require('./simulated-annealing/alignment-energy')
 const {
   addDeletion,
@@ -37,7 +38,7 @@ const sequenceAlignment = (sequenceFastas) => {
   }
 
   const measureAlignmentEnergy = (currentSequencesDictionary) =>
-    multipleAlignmentQuality(sequencesDictionary, currentSequencesDictionary)
+    multipleAlignmentWithBlossum62Quality(currentSequencesDictionary)
 
   return {
     createInitialState: createInitialAlignment,

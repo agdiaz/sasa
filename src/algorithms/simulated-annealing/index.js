@@ -27,7 +27,6 @@ const simulatedAnnealing = ({
     shouldIterate(
       currentTemperature,
       currentIteration,
-      currentEnergy,
       iterationsLimit,
       lowestTemp
     );
@@ -43,15 +42,6 @@ const simulatedAnnealing = ({
 
     currentState = cloneDeep(bestNeighborState)
     currentEnergy = bestNeighborEnergy
-
-    // if (isDebugging) {
-    //   console.debug({
-    //     currentIteration,
-    //     currentTemperature,
-    //     initialEnergy,
-    //     currentEnergy,
-    //   })
-    // }
   }
 
   return {

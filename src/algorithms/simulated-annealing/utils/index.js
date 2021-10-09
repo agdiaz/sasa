@@ -27,13 +27,9 @@ const shouldTakeBestNeighbor = (
 const shouldIterate = (
   currentTemperature,
   currentIteration,
-  currentEnergy,
   iterationsLimit,
   lowestTemp
-) =>
-  currentEnergy > 0 &&
-  currentTemperature > lowestTemp &&
-  currentIteration < iterationsLimit
+) => currentTemperature > lowestTemp && currentIteration < iterationsLimit
 
 module.exports = {
   shouldTakeBestNeighbor,
