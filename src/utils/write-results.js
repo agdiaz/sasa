@@ -49,8 +49,7 @@ const writeResults = ({ results, outputFolder }) => {
 
   resultsFormatter({ executionResult: bestResult })
 
-  console.log('Best MSA result:')
-  console.log(outputMSA)
+  console.log(`Best MSA result (${bestResult.finalEnergy}):\n${outputMSA}`)
 }
 
 module.exports = writeResults

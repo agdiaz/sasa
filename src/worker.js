@@ -24,7 +24,7 @@ const worker = async ({ parameters, sequenceFastas, executionTime }) => {
   return {
     ...solution,
     initialState: formatSequences(solution.initialState),
-    finalState: formatSequences(solution.finalState),
+    finalState: solution.finalState,
     initialSequence: consensusSequence(solution.initialState),
     finalSequence: consensusSequence(solution.finalState),
   }

@@ -1,6 +1,6 @@
 'use strict'
 
-const { times, remove } = require('lodash')
+const { times, compact, remove } = require('lodash')
 const {
   GAP_SYMBOL,
   // GAP_SYMBOL_PENALTY,
@@ -20,9 +20,7 @@ const multipleAlignmentWithBlossum62Quality = (sequencesDictionary) => {
     gapCost = 0
 
   times(columns, (columnIndex) => {
-    const positionValues = sequences.map(
-      (seq) => seq[columnIndex] || GAP_SYMBOL
-    )
+    const positionValues = compact(sequences.map((seq) => seq[columnIndex]))
 
     pairwise(positionValues).forEach(([a, b]) => {
       substitutionCost -= BLOSSUM_62[a][b]

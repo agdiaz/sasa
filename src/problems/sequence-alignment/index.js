@@ -10,14 +10,18 @@ const {
   removeGap,
 } = require('./simulated-annealing/alignment-modifier')
 const { initAlignment } = require('./simulated-annealing/alignment-initializer')
-
+const { formatSequences } = require('../../utils/format-sequences')
 const cloneDeep = require('lodash/cloneDeep')
 
 const sequenceAlignment = (sequenceFastas) => {
   const sequencesDictionary = buildSequencesDictionary(sequenceFastas)
 
-  const createInitialAlignment = () => initAlignment(sequencesDictionary)
+  const createInitialAlignment = () => {
+    const initialSequences = initAlignment(sequencesDictionary)
+    formatSequences(initialSequences)
 
+    return initialSequences
+  }
   const createNeighborAlignment = (currentSequencesDictionary) => {
     const neighborSequences = cloneDeep(currentSequencesDictionary)
     const randomIndex = Math.floor(
@@ -33,6 +37,7 @@ const sequenceAlignment = (sequenceFastas) => {
       removeGap(randomSequence)
     } // else: keep the sequence as it is
 
+    formatSequences(neighborSequences)
     return neighborSequences
   }
 

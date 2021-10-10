@@ -32,6 +32,100 @@ const consensusSequence = (sequencesDictionary) => {
   return consensus.join('')
 }
 
+const formatSequences = (sequencesDictionary) => {
+  let sequences = Object.values(sequencesDictionary).map(
+    ({ sequenceValues }) => sequenceValues
+  )
+
+  const leftPadding = getLeftPadding(sequences)
+  if (leftPadding >= 0) {
+    Object.keys(sequencesDictionary).forEach((key) => {
+      sequencesDictionary[key].sequenceValues = trimLeftPadding(
+        sequencesDictionary[key].sequenceValues,
+        leftPadding + 1
+      )
+    })
+  }
+
+  sequences = Object.values(sequencesDictionary).map(
+    ({ sequenceValues }) => sequenceValues
+  )
+
+  const rightPadding = getRightPadding(sequences)
+
+  if (rightPadding < Math.max(...sequences.map((seq) => seq.length))) {
+    Object.keys(sequencesDictionary).forEach((key) => {
+      sequencesDictionary[key].sequenceValues = trimRightPadding(
+        sequencesDictionary[key].sequenceValues,
+        rightPadding
+      )
+    })
+  }
+
+  sequences = Object.values(sequencesDictionary).map(
+    ({ sequenceValues }) => sequenceValues
+  )
+  const maxSequenceLength = Math.max(...sequences.map((seq) => seq.length))
+  Object.keys(sequencesDictionary).forEach((key) => {
+    const sequence = sequencesDictionary[key].sequenceValues
+    formatSequence(sequence, maxSequenceLength)
+  })
+
+  return sequencesDictionary
+}
+
+const getLeftPadding = (sequences) => {
+  const maxSequenceLength = Math.max(...sequences.map((seq) => seq.length))
+  let lastEmptyColumnIndex = -1
+
+  for (let columnIndex = 0; columnIndex < maxSequenceLength; columnIndex++) {
+    const columnValues = sequences.map(
+      (sequence) => sequence[columnIndex] || GAP_SYMBOL
+    )
+    const gapCount = columnValues.filter((value) => value === GAP_SYMBOL).length
+
+    if (columnValues.length !== gapCount) break
+
+    lastEmptyColumnIndex = columnIndex
+  }
+
+  return lastEmptyColumnIndex
+}
+
+const getRightPadding = (sequences) => {
+  const maxSequenceLength = Math.max(...sequences.map((seq) => seq.length))
+  let firstEmptyColumnIndex = maxSequenceLength
+
+  for (
+    let columnIndex = maxSequenceLength - 1;
+    columnIndex > -1;
+    columnIndex--
+  ) {
+    const columnValues = sequences.map(
+      (sequence) => sequence[columnIndex] || GAP_SYMBOL
+    )
+    const gapCount = columnValues.filter((value) => value === GAP_SYMBOL).length
+
+    if (columnValues.length !== gapCount) break
+
+    firstEmptyColumnIndex = columnIndex
+  }
+
+  return firstEmptyColumnIndex
+}
+
+const trimLeftPadding = (sequence, trimIndex) => {
+  if (trimIndex < 0) return sequence
+
+  return sequence.slice(trimIndex)
+}
+
+const trimRightPadding = (sequence, trimIndex) => {
+  if (trimIndex > sequence.length) return sequence
+
+  return sequence.slice(0, trimIndex)
+}
+
 const formatSequence = (sequence, maxSequenceLength) => {
   const trailingLength = maxSequenceLength - sequence.length
 
@@ -40,37 +134,6 @@ const formatSequence = (sequence, maxSequenceLength) => {
   }
 
   return sequence
-}
-
-const formatSequences = (sequencesDictionary) => {
-  const sequences = Object.values(sequencesDictionary).map(
-    ({ sequenceValues }) => sequenceValues
-  )
-  const maxSequenceLength = Math.max(...sequences.map((seq) => seq.length))
-
-  sequences.map((sequence) => formatSequence(sequence, maxSequenceLength))
-
-  let lastEmptyColumnIndex = 0
-  for (let columnIndex = 0; columnIndex < maxSequenceLength; columnIndex++) {
-    const columnValues = sequences.map(
-      (sequence) => sequence[columnIndex] || GAP_SYMBOL
-    )
-
-    _lodash.remove(columnValues, (value) => value === GAP_SYMBOL)
-    if (columnValues.length === 0) {
-      lastEmptyColumnIndex = columnIndex
-    } else {
-      break
-    }
-  }
-
-  Object.keys(sequencesDictionary).forEach((key) => {
-    sequencesDictionary[key].sequenceValues = sequencesDictionary[
-      key
-    ].sequenceValues.slice(lastEmptyColumnIndex + 1)
-  })
-
-  return sequencesDictionary
 }
 
 module.exports = { formatSequences, consensusSequence }

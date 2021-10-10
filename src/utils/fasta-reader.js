@@ -9,7 +9,6 @@ const mapPathsToSequences = (filePaths) => {
   const fastaSequences = []
 
   filePaths.forEach((filePath) => {
-    console.debug('reading', filePath)
     const fileStats = fs.lstatSync(filePath)
 
     if (fileStats.isDirectory()) {

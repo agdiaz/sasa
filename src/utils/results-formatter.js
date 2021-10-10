@@ -15,11 +15,11 @@ module.exports = ({ executionResult }) => {
   const chunkedAlignedSequence = _lodash.chunk(alignedSequence, 50)
   const iterations = _lodash.range(0, Math.ceil(maxLength / 50))
 
-  const maxHeaderLength = 20 // Math.min(Object.keys(sequencesDictionary).map(k => k.length), 20)
+  const maxHeaderLength = 20
 
   console.log('INITIAL ENERGY', executionResult.initialEnergy.toFixed(5))
   console.log('FINAL ENERGY  ', executionResult.finalEnergy.toFixed(5))
-  
+
   console.log('SEQUENCES ALIGNMENT ')
   iterations.forEach((it) => {
     console.log('FROM-TO:', it * 50, (it + 1) * 50 - 1)
