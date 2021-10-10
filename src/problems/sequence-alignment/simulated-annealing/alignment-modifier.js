@@ -1,4 +1,5 @@
 'use strict'
+const { sample } = require('lodash')
 
 const {
   GAP_SYMBOL,
@@ -6,7 +7,7 @@ const {
   PROBABILITY_POSITION_TRAIL,
 } = require('../../../constants')
 
-const addDeletion = (sequence) => {
+const addGap = (sequence) => {
   let gapIndex
   const random = Math.random()
   if (random < PROBABILITY_POSITION_HEAD) {
@@ -14,7 +15,7 @@ const addDeletion = (sequence) => {
   } else if (random < PROBABILITY_POSITION_TRAIL) {
     gapIndex = sequence.sequenceValues.length - 1
   } else {
-    gapIndex = Math.floor(Math.random() * sequence.sequenceValues.length)
+    gapIndex = Math.floor(Math.random() * sequence.sequenceValues.length - 1)
   }
 
   sequence.sequenceValues.splice(gapIndex, 0, GAP_SYMBOL)
@@ -22,13 +23,8 @@ const addDeletion = (sequence) => {
   return sequence
 }
 
-const removeDeletion = (sequence) => {
-  let gapIndex
-  if (Math.random() < PROBABILITY_POSITION_HEAD) {
-    gapIndex = sequence.sequenceValues.indexOf(GAP_SYMBOL)
-  } else {
-    gapIndex = sequence.sequenceValues.lastIndexOf(GAP_SYMBOL)
-  }
+const removeGap = (sequence) => {
+  const gapIndex = sample(indexesOf(sequence.sequenceValues, GAP_SYMBOL))
 
   if (gapIndex >= 0) {
     sequence.sequenceValues.splice(gapIndex, 1)
@@ -37,4 +33,13 @@ const removeDeletion = (sequence) => {
   return sequence
 }
 
-module.exports = { removeDeletion, addDeletion }
+const indexesOf = (sequence, char) => {
+  const indexes = []
+  for (let i = 0; i < sequence.length; i++) {
+    if (sequence[i] === char) indexes.push(i)
+  }
+
+  return indexes
+}
+
+module.exports = { removeGap, addGap }

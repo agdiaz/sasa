@@ -12,9 +12,9 @@ const simulatedAnnealing = ({
     neighborIterations,
     coolingRate,
     lowestTemp,
-    isDebugging,
   },
 }) => {
+  const initialTime = new Date()
   const { createInitialState, measureStateEnergy } = problem
   const initialState = createInitialState()
   const initialEnergy = measureStateEnergy(initialState)
@@ -45,10 +45,12 @@ const simulatedAnnealing = ({
   }
 
   return {
+    initialTime,
     initialState,
     initialEnergy,
     finalState: currentState,
     finalEnergy: currentEnergy,
+    finalTime: new Date(),
   }
 }
 

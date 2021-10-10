@@ -18,9 +18,7 @@ const findBestNeighbor = ({
     neighborIterationIndex < neighborIterations;
     neighborIterationIndex++
   ) {
-    const newNeighborState = createNeighborState(
-      cloneDeep(currentNeighborState)
-    )
+    const newNeighborState = createNeighborState(currentNeighborState)
     const newNeighborEnergy = measureStateEnergy(newNeighborState)
 
     const takeBestNeighbor = shouldTakeBestNeighbor(

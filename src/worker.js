@@ -7,7 +7,7 @@ const { sequenceAlignment } = require('./problems/sequence-alignment')
 
 const worker = async ({ parameters, sequenceFastas, executionTime }) => {
   if (parameters.isDebugging) {
-    console.debug(`[Execution #${executionTime + 1}] Resolving problem`)
+    console.debug(`[Execution #${executionTime + 1}] Resolving problem...`)
   }
 
   const problem = sequenceAlignment(sequenceFastas)
@@ -15,9 +15,9 @@ const worker = async ({ parameters, sequenceFastas, executionTime }) => {
 
   if (parameters.isDebugging) {
     console.debug(
-      `[Execution #${executionTime + 1}] Solution found: ${
-        solution.finalEnergy
-      }`
+      `[Execution #${executionTime + 1}] Solution found: energy from ${
+        solution.initialEnergy
+      } to ${solution.finalEnergy}`
     )
   }
 

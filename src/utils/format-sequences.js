@@ -50,6 +50,26 @@ const formatSequences = (sequencesDictionary) => {
 
   sequences.map((sequence) => formatSequence(sequence, maxSequenceLength))
 
+  let lastEmptyColumnIndex = 0
+  for (let columnIndex = 0; columnIndex < maxSequenceLength; columnIndex++) {
+    const columnValues = sequences.map(
+      (sequence) => sequence[columnIndex] || GAP_SYMBOL
+    )
+
+    _lodash.remove(columnValues, (value) => value === GAP_SYMBOL)
+    if (columnValues.length === 0) {
+      lastEmptyColumnIndex = columnIndex
+    } else {
+      break
+    }
+  }
+
+  Object.keys(sequencesDictionary).forEach((key) => {
+    sequencesDictionary[key].sequenceValues = sequencesDictionary[
+      key
+    ].sequenceValues.slice(lastEmptyColumnIndex + 1)
+  })
+
   return sequencesDictionary
 }
 

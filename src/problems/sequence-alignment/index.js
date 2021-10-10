@@ -3,12 +3,11 @@ const {
   PROBABILITY_ADD_DELETION,
 } = require('../../constants')
 const {
-  multipleAlignmentQuality,
   multipleAlignmentWithBlossum62Quality,
 } = require('./simulated-annealing/alignment-energy')
 const {
-  addDeletion,
-  removeDeletion,
+  addGap,
+  removeGap,
 } = require('./simulated-annealing/alignment-modifier')
 const { initAlignment } = require('./simulated-annealing/alignment-initializer')
 
@@ -29,9 +28,9 @@ const sequenceAlignment = (sequenceFastas) => {
 
     const modificationChance = Math.random()
     if (modificationChance < PROBABILITY_ADD_DELETION) {
-      addDeletion(randomSequence)
+      addGap(randomSequence)
     } else if (modificationChance < PROBABILITY_REMOVE_DELETION) {
-      removeDeletion(randomSequence)
+      removeGap(randomSequence)
     } // else: keep the sequence as it is
 
     return neighborSequences

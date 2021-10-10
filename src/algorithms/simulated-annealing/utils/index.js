@@ -12,17 +12,14 @@ const shouldTakeBestNeighbor = (
   newNeighborEnergy,
   currentEnergy,
   currentTemperature
-) => {
-  return (
-    newNeighborEnergy < currentEnergy ||
-    Math.random() <
-      probabilityOfChoosingBadNeighbor(
-        newNeighborEnergy,
-        currentEnergy,
-        currentTemperature
-      )
-  )
-}
+) =>
+  newNeighborEnergy <= currentEnergy ||
+  Math.random() <
+    probabilityOfChoosingBadNeighbor(
+      newNeighborEnergy,
+      currentEnergy,
+      currentTemperature
+    )
 
 const shouldIterate = (
   currentTemperature,

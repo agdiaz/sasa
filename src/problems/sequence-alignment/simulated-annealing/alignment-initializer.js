@@ -14,9 +14,16 @@ const initAlignment = (sequencesDictionary) => {
 
 const addPadding = (sequence) => {
   const paddingCount = Math.floor(Math.random() * sequence.length)
-
-  for (let paddingIndex = 0; paddingIndex < paddingCount; paddingIndex++) {
-    sequence.unshift(GAP_SYMBOL)
+  if (Math.random() < 0.5) {
+    // LEFT PADDING
+    for (let paddingIndex = 0; paddingIndex < paddingCount; paddingIndex++) {
+      sequence.unshift(GAP_SYMBOL)
+    }
+  } else {
+    // RIGHT PADDING
+    for (let paddingIndex = 0; paddingIndex < paddingCount; paddingIndex++) {
+      sequence.push(GAP_SYMBOL)
+    }
   }
 
   return sequence
