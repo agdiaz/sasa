@@ -13,15 +13,13 @@ const { initAlignment } = require('./simulated-annealing/alignment-initializer')
 const { formatSequences } = require('../../utils/format-sequences')
 const cloneDeep = require('lodash/cloneDeep')
 
-const sequenceAlignment = (sequenceFastas) => {
-  const sequencesDictionary = buildSequencesDictionary(sequenceFastas)
-
+const sequenceAlignment = (sequencesDictionary) => {
   const createInitialAlignment = () => {
     const initialSequences = initAlignment(sequencesDictionary)
-    formatSequences(initialSequences)
-
+    // formatSequences(initialSequences)
     return initialSequences
   }
+
   const createNeighborAlignment = (currentSequencesDictionary) => {
     const neighborSequences = cloneDeep(currentSequencesDictionary)
     const randomIndex = Math.floor(
@@ -49,17 +47,6 @@ const sequenceAlignment = (sequenceFastas) => {
     createNeighborState: createNeighborAlignment,
     measureStateEnergy: measureAlignmentEnergy,
   }
-}
-
-const buildSequencesDictionary = (sequenceFastas) => {
-  return sequenceFastas.reduce((dictionary, fasta) => {
-    dictionary[fasta.set[0].header] = {
-      originalSequence: fasta.set[0].seq,
-      sequenceValues: fasta.set[0].seq.split(''),
-    }
-
-    return dictionary
-  }, {})
 }
 
 module.exports = { sequenceAlignment }

@@ -4,13 +4,31 @@ const {
 } = require('./utils/format-sequences')
 const { simulatedAnnealing } = require('./algorithms/simulated-annealing')
 const { sequenceAlignment } = require('./problems/sequence-alignment')
+const {
+  mapPathsToSequences,
+  buildSequencesDictionary,
+} = require('./utils/fasta-reader')
 
-const worker = async ({ parameters, sequenceFastas, executionTime }) => {
+const worker = async ({ parameters, executionTime }) => {
+  const sequenceFastas = mapPathsToSequences(parameters.files)
+  const sequencesDictionary = buildSequencesDictionary(sequenceFastas)
+
   if (parameters.isDebugging) {
-    console.debug(`[Execution #${executionTime + 1}] Resolving problem...`)
+    console.debug(
+      `[Execution #${executionTime + 1}] Starting to resolve a problem of ${
+        Object.keys(sequencesDictionary).length
+      } sequences`,
+      sequencesDictionary
+    )
   }
 
-  const problem = sequenceAlignment(sequenceFastas)
+  const problem = sequenceAlignment(sequencesDictionary)
+  if (parameters.isDebugging) {
+    console.debug(
+      `[Execution #${executionTime + 1}] Problem ready to be resolved`
+    )
+  }
+
   const solution = simulatedAnnealing({ problem, parameters })
 
   if (parameters.isDebugging) {

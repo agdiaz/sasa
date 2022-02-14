@@ -30,6 +30,10 @@ const findBestNeighbor = ({
     if (takeBestNeighbor) {
       currentNeighborState = cloneDeep(newNeighborState)
       currentNeighborEnergy = newNeighborEnergy
+      // console.log('New energy state', {
+      //   prev: currentNeighborEnergy,
+      //   new: newNeighborEnergy,
+      // })
     }
   }
 

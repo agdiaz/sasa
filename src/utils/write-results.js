@@ -6,7 +6,7 @@ const { parse } = require('json2csv')
 
 const resultsFormatter = require('./results-formatter')
 
-const writeResults = ({ results, outputFolder }) => {
+const writeResults = ({ results, outputFolder, msaFile, isDebugging }) => {
   if (!fs.existsSync(outputFolder)) {
     console.log('Creating output folder', outputFolder)
     fs.mkdirSync(outputFolder, { recursive: true })
@@ -37,19 +37,28 @@ const writeResults = ({ results, outputFolder }) => {
   )
   console.log('Final energies: ', Object.keys(finalEnergies))
 
-  const msaFilename = `${outputFolder}/msa.fasta`
+  const msaFilename = `${outputFolder}/${msaFile}`
   const bestResult = sortedResults[0]
 
-  const outputMSA = Object.entries(bestResult.finalState)
-    .map(([entry, value]) => `>${entry}\n ${value.sequenceValues.join('')}`)
-    .join('\n')
-    .concat('\n')
+  Object.entries(bestResult.finalState).forEach(([entry, value]) => {
+    const line = `>${entry}\n${value.sequenceValues.join('')}\n`
+    fs.appendFileSync(msaFilename, line)
+  })
 
-  fs.writeFileSync(msaFilename, outputMSA)
+  console.log('MSA in fasta format ready:', msaFilename)
 
-  resultsFormatter({ executionResult: bestResult })
+  if (isDebugging) {
+    resultsFormatter({ executionResult: bestResult })
 
-  console.log(`Best MSA result (${bestResult.finalEnergy}):\n${outputMSA}`)
+    console.log(`Best MSA result (${bestResult.finalEnergy})`)
+
+    const msaContentReader = fs.createReadStream(msaFilename)
+
+    // Read and display the file data on console
+    msaContentReader.on('data', function (chunk) {
+      console.log(chunk.toString())
+    })
+  }
 }
 
 module.exports = writeResults

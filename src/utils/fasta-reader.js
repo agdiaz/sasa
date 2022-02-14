@@ -30,4 +30,19 @@ const mapPathsToSequences = (filePaths) => {
   return fastaSequences
 }
 
-module.exports = { mapPathsToSequences }
+const buildSequencesDictionary = (sequenceFastas) => {
+  return sequenceFastas.reduce((dictionary, fasta) => {
+    fasta.set.forEach((_seq, index) => {
+      const residues = fasta.set[index].seq.toUpperCase().trim()
+
+      dictionary[fasta.set[index].header.trim()] = {
+        originalSequence: residues,
+        sequenceValues: residues.split(''),
+      }
+    })
+
+    return dictionary
+  }, {})
+}
+
+module.exports = { mapPathsToSequences, buildSequencesDictionary }
