@@ -24,7 +24,7 @@
     "json2csv": "^4.5.4",
     "lodash": ">=4.17.19",
     "minimist": ">=0.2.1",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "node-notifier": ">=8.0.1",
     "nodeplotlib": "^0.6.5",
     "piscina": "^3.1.0",
